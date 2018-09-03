@@ -1,0 +1,139 @@
+/* ******************************
+  el-container
+  布局容器
+  ******************************* */
+
+.el-container {
+  height: 100%;      /* 设置固定高度，使内容出现滚动条 */
+  flex-basis: 70%;    /* 放置左侧边栏被挤压 */
+}
+
+.el-aside {
+  background-color: #2B97EF;   /* 左边栏背景色 */
+}
+
+.el-header {
+  background-color: #fff;       /* header背景色 */
+  padding: 0;
+  position: relative;
+}
+
+.el-main {
+  background-color: #fff;      /* 主内容区背景色 */
+  margin: 15px 10px 10px 15px;
+}
+
+.el-aside, .el-main {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* ******************************
+  el-dialog
+  ******************************* */
+.el-dialog__body {
+  padding: 20px 20px;      /* dialog整体边距缩小*/
+}
+
+/* ******************************
+  el-input el-checkbox
+  ******************************* */
+
+.el-input__inner {
+  padding: 0 10px;
+}
+
+/* ******************************
+  is-disabled
+  ******************************* */
+.el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner, .el-checkbox__input.is-disabled+span.el-checkbox__label{
+  color: #888;
+}
+
+.el-radio__input.is-disabled+span.el-radio__label{
+  color: #888;
+}
+.el-radio__input.is-disabled .el-radio__inner, .el-radio__input.is-disabled.is-checked .el-radio__inner {
+  border-color: #dcdfe6;
+}
+
+
+/* ******************************
+  el-table
+  ******************************* */
+
+.el-table th {
+  background-color: #F4F6F9;
+}
+
+.warning-row {
+  background: oldlace!important;
+}
+
+.warning-row:hover {
+  background: oldlace!important;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped.warning-row td {
+  background: none;
+}
+
+.el-table--enable-row-hover .el-table__body tr.warning-row:hover>td {
+  background: none;
+}
+/* ******************************
+  el-radio  el-checkbox
+  ******************************* */
+.el-radio+.el-radio , .el-checkbox+.el-checkbox{
+  margin-left: 0;
+}
+
+.el-radio , .el-checkbox{
+  margin-right: 20px;
+}
+
+.endways .el-radio,.endways .el-checkbox {
+  display: block;
+  margin: 4px 0;
+  width: 100%;
+}
+
+.new-radio .el-checkbox__inner {
+  border-radius: 7px;
+}
+/* ******************************
+  组件 索引页
+  ******************************* */
+.cmain .el-row {
+  margin-bottom: 15px;
+}
+/* ******************************
+  组件 f1
+  ******************************* */
+.f1-index .el-checkbox,.f1-index .el-radio  {
+  display: block;            /* f1-index table中的单选多选，选项各占一行*/
+}
+
+.f1-index .el-checkbox+.el-checkbox,.f1-index .el-radio+.el-radio{
+  margin-left: 0;
+}
+
+.f1-index .el-dialog {        /* f1 的dialog特殊定制为看似新页面的形式 */
+  margin-top: 75px!important;
+  margin-bottom: 0;
+  position: fixed;
+  top:0;
+  bottom: 10px;
+  left: 165px;
+  right: 10px;
+  width: auto;
+  overflow-y: auto;
+}
+
+
+/* ---------------------------------------------------- 新增全局class --------------------------------------------- */
+.footer {
+  text-align: right;
+  margin: 15px 0;
+}
