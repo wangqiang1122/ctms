@@ -7,6 +7,12 @@ import Router from 'vue-router';
  *
  * */
 import Main from '@/views/Main';
+/* f0  - 主页
+ *
+ * 类似用户管理的功能，比较单纯的表结构，最常规的增删改查
+ *
+ * */
+import F0Index from '@/views/f0/index';
 
 /* f1  - 功能块1
  *
@@ -53,7 +59,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main',
+      name: 'F0_index',
+      component: F0Index,
     },
     {
       path: '/main',

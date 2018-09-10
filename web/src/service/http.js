@@ -26,9 +26,6 @@ axiosIns.interceptors.request.use(
     if (storage.getToken()) {
       config.headers.Authorization = storage.getToken();
     }
-    if (config.url.indexOf('f0') < 0 && !storage.getAccount()) {
-      auth.logoutErr();
-    }
     return config;
   },
   error => Promise.reject(error),

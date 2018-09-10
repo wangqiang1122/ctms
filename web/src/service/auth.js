@@ -3,11 +3,12 @@ import storage from '@/service/storage';
 import { MessageBox } from 'element-ui';
 
 export default {
+  // 登陆
   login(params) {
     return api.post('f0/login', params).then((resp) => {
       if (resp.code === 200 && resp.result) {
         storage.setAccount(resp.result);
-        window.location.href = `http://${window.location.host}/console/#/main`;
+        window.location.href = `http://${window.location.host}/console/#/`;
       } else {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -17,6 +18,7 @@ export default {
       return resp;
     });
   },
+  // 登出
   logout() {
     api.put('f0/logout').then((resp) => {
       if (resp.code === 200) {
@@ -43,9 +45,22 @@ export default {
       window.location.href = `http://${window.location.host}`;
     }
   },
+  // 菜单
   getPermissionList() {
     const accountId = storage.getAccount().id;
     return api.get('f0/menu', { params: { accountId } }).then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return resp.result;
+    });
+  },
+  // 获取项目信息
+  getProjects() {
+    return api.get('projects').then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

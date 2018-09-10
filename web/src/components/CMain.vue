@@ -70,7 +70,7 @@
       return {
         loading1: false,
         privilege: [],          // 全部权限
-        mainMenus: [],          // 主页的列表
+        mainMenus: [],          // 主的页列表
         menuRows: undefined,    // 以每行4个划分，行的大小
         key: 1,                 // 用于动画
         blockId: null,          // 展示的子元素
@@ -81,6 +81,8 @@
       bus.$on('TAB_CHANGED', () => {
         this.initStorage();
       });
+      bus.$emit('TITLE_HEAD', { sub_menu_name: '', tag: '' });
+      bus.$emit('TITLE_ITEM', { isShow: true });
     },
     methods: {
       initStorage() {
