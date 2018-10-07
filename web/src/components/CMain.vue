@@ -8,46 +8,46 @@
           <el-col :span="6" class="box" v-if="mainMenus[i*4]">
             <div class="a-block" :class="{ checked: blockId === i*4 }" @click="blockSub(i*4)">
               <span class="a-icon"><img class="move1" :src="mainMenus[i*4].icon_url" height="48" width="48"></span>
-              <span class="a-text move1">{{mainMenus[i*4].menu_name}}</span>
+              <span class="a-text move1">{{mainMenus[i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[1+i*4]">
             <div class="a-block" :class="{ checked: blockId === 1+i*4 }" @click="blockSub(1+i*4)">
               <span class="a-icon"><img class="move1" :src="mainMenus[1+i*4].icon_url" height="48" width="48"></span>
-              <span class="a-text move1">{{mainMenus[1+i*4].menu_name}}</span>
+              <span class="a-text move1">{{mainMenus[1+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[2+i*4]">
             <div class="a-block" :class="{ checked: blockId === 2+i*4 }" @click="blockSub(2+i*4)">
               <span class="a-icon"><img class="move1" :src="mainMenus[2+i*4].icon_url" height="48" width="48"></span>
-              <span class="a-text move1">{{mainMenus[2+i*4].menu_name}}</span>
+              <span class="a-text move1">{{mainMenus[2+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[3+i*4]">
             <div class="a-block" :class="{ checked: blockId === 3+i*4 }" @click="blockSub(3+i*4)">
               <span class="a-icon"><img class="move1" :src="mainMenus[3+i*4].icon_url" height="48" width="48"></span>
-              <span class="a-text move1">{{mainMenus[3+i*4].menu_name}}</span>
+              <span class="a-text move1">{{mainMenus[3+i*4].menuName}}</span>
             </div>
           </el-col>
           <!-- 列表展开内容 -->
           <transition name="slide-fade2">
             <div class="sub" :key="i*4" v-if="mainMenus[i*4] && blockId === i*4">
-              <span class="sub-item"  v-for="item in mainMenus[i*4].children" @click="goToNextLevel(item)">{{item.sub_menu_name}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="1+i*4" v-if="mainMenus[1+i*4] && blockId === 1+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[1+i*4].children" @click="goToNextLevel(item)">{{item.sub_menu_name}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[1+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="2+i*4" v-if="mainMenus[2+i*4] && blockId === 2+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[2+i*4].children" @click="goToNextLevel(item)">{{item.sub_menu_name}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[2+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="3+i*4"  v-if="mainMenus[3+i*4] && blockId === 3+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[3+i*4].children" @click="goToNextLevel(item)">{{item.sub_menu_name}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[3+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
             </div>
           </transition>
         </el-row>
@@ -62,6 +62,7 @@
 
 <script>
   import storageService from '@/service/storage';
+  import authService from '@/service/auth';
   import bus from '@/utils/bus';
 
   export default {
@@ -78,22 +79,21 @@
     },
     created() {
       this.initStorage();
-      bus.$on('TAB_CHANGED', () => {
-        this.initStorage();
-      });
       bus.$emit('TITLE_HEAD', { sub_menu_name: '', tag: '' });
+      bus.$emit('TAB_CHANGED');
       bus.$emit('TITLE_ITEM', { isShow: true });
     },
     methods: {
       initStorage() {
-        this.privilege = storageService.getPrivilege();
-        if (this.privilege) {
-          this.updateTab(this.privilege);
-        }
+        authService.getMenus(storageService.getTopNav().projectId).then((val) => {
+          this.privilege = val.parentMenuList;
+          if (this.privilege) {
+            this.updateTab(this.privilege);
+          }
+        });
       },
       updateTab(privilege) {
-        const topNav = storageService.getTopNav();
-        this.mainMenus = privilege.menus[topNav.menu_key]; // child_key可能不存在
+        this.mainMenus = privilege;
         if (this.mainMenus) {
           this.menuRows = Math.floor(this.mainMenus.length / 4) + 1;
           this.key += 1;
@@ -114,7 +114,7 @@
          * 进入功能层
          * */
         storageService.setLv3Nav(item);
-        this.$router.push({ name: item.router_name });
+        this.$router.push({ name: item.formCode });
       },
     },
   };

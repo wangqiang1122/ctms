@@ -3,9 +3,10 @@ import storageService from '@/service/storage';
 import { MessageBox } from 'element-ui';
 
 export default {
-  getF2Structure(formId) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/formStruct/db/${db}/form/${formId}`).then((resp) => {
+  // 获取表数据接结构
+  getF2Structure() {
+    // const db = storageService.getTopNav().projectDB;
+    return api.get('form-struct1').then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -15,9 +16,12 @@ export default {
       return resp.result;
     });
   },
-  getF2List(formId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/listRecord/db/${db}/form/${formId}`, { params }).then((resp) => {
+  // 获取列表数据
+  getF2List(params) {
+    // formId
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}
+    return api.get('recordslist1', { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -27,9 +31,12 @@ export default {
       return resp.result;
     });
   },
-  getF2Detail(formId, dataId) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/viewRecord/db/${db}/form/${formId}/data/${dataId}`).then((resp) => {
+  // 获取指定数据
+  getF2Detail() {
+    // formId, dataId
+    // const db = storageService.getTopNav().projectDB;
+    // ${db}/${formId}/${dataId}
+    return api.get('records').then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -39,9 +46,12 @@ export default {
       return resp.result;
     });
   },
-  getF2HistoryDetail(formId, dataId) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/auditRecord/db/${db}/form/${formId}/data/${dataId}`).then((resp) => {
+  // 获取历史数据
+  getF2HistoryDetail() {
+    // formId, dataId
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.get('audit-records1').then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -51,9 +61,12 @@ export default {
       return resp.result;
     });
   },
-  getF2ChangeStatus(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/manageRecord/db/${db}/form/${formId}/data/${dataId}`, { params }).then((resp) => {
+  // 提交数据；1：接受数据；2：审核通过；3：锁定数据；4：解锁数据
+  getF2ChangeStatus(params) {
+    // formId, dataId,
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.get('crf-state', { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -63,9 +76,11 @@ export default {
       return resp;
     });
   },
-  putF2(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.put(`f2/editRecord/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+  putF2(params) {
+    // formId, dataId,
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.put('records', params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -87,9 +102,12 @@ export default {
       return true;
     });
   },
-  createQuery(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f2/createQuery/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+  // 新建质疑
+  createQuery(params) {
+    // formId, dataId
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.post('queries', params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -99,9 +117,12 @@ export default {
       return true;
     });
   },
-  responseQuery(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f2/responseQuery/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+  // 回复
+  responseQuery(params) {
+    // formId, dataId,
+    // const db = storageService.getTopNav().projectDB;
+    // ${db}/${formId}/${dataId}
+    return api.put('queries', params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -111,9 +132,12 @@ export default {
       return true;
     });
   },
-  closeQuery(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/closeQuery/db/${db}/form/${formId}/data/${dataId}`, { params }).then((resp) => {
+  // 关闭
+  closeQuery(params) {
+    // formId, dataId,
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.get('queries', { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -135,9 +159,12 @@ export default {
       return true;
     });
   },
-  editQuery(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/editQuery/db/${db}/form/${formId}/data/${dataId}`, { params }).then((resp) => {
+  // 编辑
+  editQuery(params) {
+    // formId, dataId,
+    // const db = storageService.getTopNav().projectDB;
+    // ${db}/${formId}/${dataId}
+    return api.get('queries', { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -147,9 +174,12 @@ export default {
       return true;
     });
   },
-  listQuery(formId, dataId) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/listQuery/db/${db}/form/${formId}/data/${dataId}`).then((resp) => {
+  // 质疑列表
+  listQuery() {
+    // formId, dataId
+    // const db = storageService.getTopNav().projectDB;
+    // /${db}/${formId}/${dataId}
+    return api.get('queries').then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

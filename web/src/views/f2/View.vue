@@ -5,22 +5,22 @@
     <!--</div>-->
     <div class="btn">
       <el-button class="btn" size="mini" type="primary" @click="goBack">返回</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.write === 1" type="primary" @click="edit">编辑CRF</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.audit === 1" type="primary" @click="jump">查看历史</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.DMQuery=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.verifyQuery=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑CRF</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isRead" type="primary" @click="jump">查看历史</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManage=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.analyze=== 1" type="primary">分析</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.submit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.DMAccept=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.verifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.unlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.lock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isSubmit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isUnlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isLock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
       <!--<el-button class="btn" size="mini" v-if="btnRights.delete=== 1" type="primary">删除</el-button>-->
     </div>
     <div class="el-table-wrap">
       <el-row>
-        <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
-        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formDes}}</el-col>
+        <el-col :span="6" class="title">CRF ID: {{tHead.CRFID}}</el-col>
+        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
         <el-col :span="4" class="title">Rule Status: {{tHead.ruleStatus}}</el-col>
         <el-col :span="4" class="title">DCR: {{tHead.queryStatus}}</el-col>
       </el-row>
@@ -28,8 +28,8 @@
         <el-col :span="6" class="title">机构: {{tHead.siteDes}}</el-col>
         <el-col :span="10" class="title">
           <el-row>
-            <el-col :span="8" class="title">受试者: {{tHead.subjectCode}}</el-col>
-            <el-col :span="8" class="title">访视: {{tHead.visitDes}}</el-col>
+            <el-col :span="8" class="title">受试者: {{tHead.acceptBy}}</el-col>
+            <el-col :span="8" class="title">访视: {{tHead.visitName}}</el-col>
             <el-col :span="8" class="title">提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
@@ -42,18 +42,19 @@
       <el-table-column label="No." align="left" width="60px">
         <template slot-scope="scope">
           <span v-if="scope.row.rowSpan === '1'">{{scope.row.id}}</span>
-          <span v-if="scope.row.rowSpan === '0'">{{scope.row.qName}}</span>
+          <span v-if="scope.row.rowSpan === '0'">{{scope.row.fieldName}}</span>
           <span v-if="scope.row.rowSpan === '0'" class="italic">{{scope.row.qIns}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="qName" label="问题" align="right">
+      <el-table-column prop="fieldName" label="问题" align="right">
         <template slot-scope="scope">
-          <div>{{scope.row.qName}}</div>
+          <div>{{scope.row.fieldName}}</div>
           <div class="italic">{{scope.row.qIns}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="valueType" label="值">
         <template slot-scope="scope">
+          {{scope.row.valueType}}
           <!-- 1静态文本 -->
           <div v-if="scope.row.valueType.type == 1" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
           <!-- 2文本输入 -->
@@ -131,12 +132,12 @@
       </el-table-column>
       <el-table-column prop="queryType" label="类型" align="left">
         <template slot-scope="scope">
-          <span>{{scope.row.queryType}}</span>
+          <span>{{queryTypeArr[scope.row.queryType]}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="queryStatus" label="状态" align="left">
         <template slot-scope="scope">
-          <span>{{scope.row.queryStatus}}</span>
+          <span>{{queryStateIdArr[scope.row.queryStateId]}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="queryContent" label="质疑" align="left" min-width="200">
@@ -223,6 +224,9 @@
   import storageService from '@/service/storage';
   import f2Service from '@/service/f2';
   import bus from '@/utils/bus';
+  import authService from '@/service/auth';
+  import { queryStateId, queryType } from '@/data/constants';
+
 
   export default {
     name: 'f2',
@@ -267,6 +271,9 @@
         dialogVisible3: false,
         dialogVisible4: false,
         dialogVisible5: false,
+        queryStateIdArr: queryStateId,
+        queryTypeArr: queryType,
+        operateTypeId: '',
       };
     },
     created() {
@@ -277,29 +284,38 @@
         this.routeParams = this.$route.params;
         storageService.setRouteParams(this.$route.params);
       }
-      this.getStructure(this.routeParams.formId);
+      this.getStructure(this.routeParams.formId, this.routeParams.dataId);
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.routeParams.formId + this.routeParams.formName, tag: 'View:' });
       this.listQuery();
+      this.getRight(this.routeParams.formId);
     },
     methods: {
-      getStructure(formId) {
+      getStructure(formId, dataId) {
         this.loading1 = true;
-        f2Service.getF2Structure(formId).then((resp) => {
+        f2Service.getF2Structure(formId, dataId).then((resp) => {
           this.loading1 = false;
           if (resp) {
-            this.tableStructure = resp.fields;
+            this.tableStructure = resp.fieldList;
             this.getDetail(this.routeParams.formId, this.routeParams.dataId);
           }
+        });
+      },
+      getRight(formId) {
+        authService.getPermissons(formId).then((resp) => {
+          this.btnRights = resp;
         });
       },
       getDetail(formId, dataId) {
         f2Service.getF2Detail(formId, dataId).then((resp) => {
           if (resp) {
-            this.tHead = resp.tHead;
-            this.tableValue = resp.tBody;
+            this.tHead = resp.CRFHeader;
+            this.tableValue = resp.body;
             this.hasViolation = false;
+            // 值
             this.tableStructure.forEach((v) => {
+              console.log(v);
               Object.keys(this.tableValue).forEach((v1) => {
+                console.log(v1);
                 if (v.id === v1) {
                   v.value = this.tableValue[v1];
                   if (v.value.ruleLevel !== 0) {
@@ -311,7 +327,6 @@
                 }
               });
             });
-            this.btnRights = resp.rights;
           }
         });
       },
@@ -356,7 +371,7 @@
       },
       changeStatus(status) {
         const params = {
-          manageType: status,
+          stateTypeId: status,
           reasonForChange: '',
         };
         this.$confirm('请再次确认该操作', '提示', {
@@ -384,7 +399,9 @@
         this.JumpOuterPage('F2_Edit', this.routeParams);
       },
       goBack() {
-        this.JumpPage(this.currAction, 'List');
+        // console.log(this.currAction);
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
       },
       jump() {
         this.JumpOuterPage('F2_Audit');
@@ -441,7 +458,7 @@
       listQuery() {
         f2Service.listQuery(this.routeParams.formId, this.routeParams.dataId).then((resp) => {
           if (resp) {
-            this.queryList = resp.query;
+            this.queryList = resp.querylist;
           }
         });
       },
@@ -450,19 +467,23 @@
           // 回复
           this.responseQueryOpen(row.queryId);
           this.queryContentRow = row.queryContent;
+          this.operateTypeId = type;
         }
         if (type === 1) {
           // 编辑
           this.editQueryOpen(row.queryId);
           this.queryContentRow = row.queryContent;
+          this.operateTypeId = type;
         }
         if (type === 2) {
           // 关闭
           this.closeQueryOpen(row.queryId);
+          this.operateTypeId = type;
         }
         if (type === 3) {
           // 删除
           this.deleteQueryOpen(row.queryId);
+          this.operateTypeId = type;
         }
       },
       responseQueryOpen(queryId) {
@@ -473,7 +494,8 @@
       responseQuery() {
         const params = {
           queryId: this.queryId,
-          responseContent: this.responseContent,
+          response: this.responseContent,
+          operateTypeId: this.operateTypeId,
         };
         f2Service.responseQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
           if (resp) {
@@ -494,6 +516,7 @@
       closeQuery() {
         const params = {
           queryId: this.queryId,
+          operateTypeId: this.operateTypeId,
         };
         f2Service.closeQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
           if (resp) {
@@ -534,7 +557,8 @@
       editQuery() {
         const params = {
           queryId: this.queryId,
-          queryContent: this.queryContentRow,
+          content: this.queryContentRow,
+          operateTypeId: this.operateTypeId,
         };
         f2Service.editQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
           if (resp) {

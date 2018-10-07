@@ -8,8 +8,8 @@
     </div>
     <div class="el-table-wrap">
       <el-row>
-        <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
-        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formDes}}</el-col>
+        <el-col :span="6" class="title">CRF ID: {{tHead.CRFID}}</el-col>
+        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
         <el-col :span="4" class="title">Rule Status: {{tHead.ruleStatus}}</el-col>
         <el-col :span="4" class="title">DCR: {{tHead.queryStatus}}</el-col>
       </el-row>
@@ -17,8 +17,8 @@
         <el-col :span="6" class="title">机构: {{tHead.siteDes}}</el-col>
         <el-col :span="10" class="title">
           <el-row>
-            <el-col :span="8" class="title">受试者: {{tHead.subjectCode}}</el-col>
-            <el-col :span="8" class="title">访视: {{tHead.visitDes}}</el-col>
+            <el-col :span="8" class="title">受试者: {{tHead.acceptBy}}</el-col>
+            <el-col :span="8" class="title">访视: {{tHead.visitName}}</el-col>
             <el-col :span="8" class="title">提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
@@ -31,13 +31,13 @@
       <el-table-column label="#" align="left" width="60px" fixed>
         <template slot-scope="scope">
           <span v-if="scope.row.rowSpan === '1'">{{scope.row.id}}</span>
-          <span v-if="scope.row.rowSpan === '0'">{{scope.row.qName}}</span>
+          <span v-if="scope.row.rowSpan === '0'">{{scope.row.fieldName}}</span>
           <span v-if="scope.row.rowSpan === '0'" class="italic">{{scope.row.qIns}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="qName" label="问题" align="right" min-width="200px" fixed>
         <template slot-scope="scope">
-          <div>{{scope.row.qName}}</div>
+          <div>{{scope.row.fieldName}}</div>
           <div class="italic">{{scope.row.qIns}}</div>
         </template>
       </el-table-column>
@@ -154,7 +154,7 @@
         storageService.setRouteParams(this.$route.params);
       }
       this.getStructure(this.routeParams.formId);
-      bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.sub_menu_name, tag: 'Audit:' });
+      bus.$emit('TITLE_HEAD', { sub_menu_name: `${this.routeParams.formId}${this.routeParams.formName}`, tag: 'Audit:' });
     },
     methods: {
       getStructure(formId) {
@@ -162,7 +162,7 @@
         f2Service.getF2Structure(formId).then((resp) => {
           this.loading1 = false;
           if (resp) {
-            this.tableStructure = resp.fields;
+            this.tableStructure = resp.fieldList;
             this.getDetail(this.routeParams.formId, this.routeParams.dataId);
           }
         });
@@ -170,8 +170,8 @@
       getDetail(formId, dataId) {
         f2Service.getF2Detail(formId, dataId).then((resp) => {
           if (resp) {
-            this.tHead = resp.tHead;
-            this.tableValue = resp.tBody;
+            this.tHead = resp.CRFHeader;
+            this.tableValue = resp.body;
             this.tableStructure.forEach((v) => {
               Object.keys(this.tableValue).forEach((v1) => {
                 if (v.id === v1) {
@@ -206,7 +206,8 @@
         });
       },
       goBack() {
-        this.JumpOuterPage('F2_View');
+        // this.JumpOuterPage('F2_View');
+        this.$router.back(-1);
       },
       objectSpanMethod({ row, columnIndex }) {
         const d = row.rowSpan;

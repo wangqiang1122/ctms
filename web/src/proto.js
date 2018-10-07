@@ -9,7 +9,7 @@ Vue.prototype.PAGINATION_LAYOUT = PAGINATION_LAYOUT;
 
 /* 根据routerName跳转 */
 Vue.prototype.JumpPage = function a(currAction, routerName, params) {
-  const name = `${currAction.router_name.substr(0, currAction.router_name.indexOf('_'))}_${routerName}`;
+  const name = `${currAction.formCode.substr(0, currAction.formCode.indexOf('_'))}_${routerName}`;
   this.$router.push({ name, params });
 };
 Vue.prototype.JumpOuterPage = function b(routerName, params) {

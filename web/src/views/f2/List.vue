@@ -23,6 +23,8 @@
         <el-button :type="searchType === 2 ? 'success': 'info'" size="mini" round @click="active(2)">等于</el-button>
         <el-button :type="searchType === 3 ? 'success': 'info'" size="mini" round @click="active(3)">小于</el-button>
         <el-button :type="searchType === 4 ? 'success': 'info'" size="mini" round @click="active(4)">包含</el-button>
+        <el-button :type="orderTypeId === 0 ? 'success': 'info'" size="mini" round @click="cliZ(0)">正序</el-button>
+        <el-button :type="orderTypeId === 1 ? 'success': 'info'" size="mini" round @click="cliZ(1)">倒序</el-button>
         <el-input size="small" v-model="searchContent" :clearable="true" style="width: 200px;"></el-input>
         <el-button size="mini" @click="reset">重置</el-button>
       </span>
@@ -73,6 +75,7 @@
         searchField: null,
         searchContent: null,
         searchType: null,
+        orderTypeId: null,
         // --- pagination ----
         currentPage: 1,
         totalNum: 1,
@@ -97,7 +100,7 @@
           searchField: this.searchField,
           searchType: this.searchType,
         };
-        this.getList(this.currAction.form_id, params);
+        this.getList(this.currAction.formId, params);
       },
       getList(formId, params) {
         this.loading1 = true;
@@ -117,6 +120,10 @@
       },
       active(t) {
         this.searchType = t;
+        this.search();
+      },
+      cliZ(t) {
+        this.orderTypeId = t;
         this.search();
       },
       handleCurrentChange(val) {
@@ -143,6 +150,7 @@
         this.searchContent = null;
         this.searchField = null;
         this.searchType = null;
+        this.orderTypeId = null;
         this.search();
       },
       showHide() {

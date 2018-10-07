@@ -3,17 +3,38 @@
     <!-- title -->
     <div class="f3-title">
       <div class="f3-title-1">
-        <div style="border-bottom: 1px solid #ebeef5;height: 36px;line-height: 36px">{{topnav.project_name}}</div>
-        <div style="height: 36px;line-height: 36px">{{topnav.id}}</div>
+        <div style="border-bottom: 1px solid #ebeef5;height: 36px;line-height: 36px">{{topnav.projectName}}</div>
+        <div style="height: 36px;line-height: 36px">{{topnav.projectUUID}}</div>
       </div>
       <div class="f3-title-2">病例报告采集日程计划表</div>
     </div>
     <!---content--->
-    <el-table style="width: 100%" :data="tableData"  label-class-name="table1"  :show-header="false" :span-method="arraySpanMethod" border v-loading="loading1" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading">
-      <el-table-column label="" align="center"  prop="key" height="30"></el-table-column>
-      <el-table-column label="" align="left"   prop="name" hright="30"></el-table-column>
-      <el-table-column label="" align="center"  :prop="item" :key="item" v-for="item in tableFields"></el-table-column>
-    </el-table>
+    <div class="content">
+      <el-table :data="tableData" border stripe v-loading="loading1" element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading" style="width: 100%">
+        <el-table-column v-for="(value, key) in tableHead"
+                         :key="key" v-if="key === 'crf'"
+                         :prop="key" :label="value.visitName" min-width="50px" align="left">
+          <template slot-scope="scope">
+            <span>{{scope.row[key]}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-for="(value, key) in tableHead" :key="key" v-if="key !== 'crf'" :prop="key" :label="value.visitName"
+                         min-width="50px" align="center">
+          <el-table-column :prop="key" :label="value.visitCode"
+                           min-width="50px" align="center">
+            <template slot-scope="scope">
+              <div>{{scope.row[key].status}}</div>
+            </template>
+          </el-table-column>
+        </el-table-column>
+      </el-table>
+    </div>
+    <!--<el-table style="width: 100%" :data="tableData"  label-class-name="table1"  :show-header="false" :span-method="arraySpanMethod" border v-loading="loading1" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading">-->
+      <!--<el-table-column label="" align="center"  prop="key" height="30"></el-table-column>-->
+      <!--<el-table-column label="" align="left"   prop="name" hright="30"></el-table-column>-->
+      <!--<el-table-column label="" align="center"  :prop="item" :key="item" v-for="item in tableFields"></el-table-column>-->
+    <!--</el-table>-->
     <div class="f3-footer">
       <div>
         <span>X=必须填</span>
@@ -27,6 +48,7 @@
 <script>
   import storageService from '@/service/storage';
   import f3Service from '@/service/f3';
+  import bus from '@/utils/bus';
 
   export default {
     name: 'f3',
@@ -38,12 +60,15 @@
         tableData: [],            // table内容
         currentPage: 1,        // 当前页
         topnav: {},             // 缓存
+        tableHead: [],
       };
     },
     created() {
       this.currAction = storageService.getLv3Nav();
       this.getFormList(this.currAction.form_id);
       this.topnav = storageService.getTopNav();
+      bus.$emit('TAB_CHANGED');
+      bus.$emit('TITLE_ITEM', { isShow: true });
     },
     methods: {
       getFormList(fromID) {
@@ -51,7 +76,8 @@
         f3Service.getF3List(fromID).then((res) => {
           this.loading1 = false;
           this.tableFields = res.head;
-          this.tableData = res.list;
+          this.tableData = res.body;
+          this.tableHead = res.head;
         });
       },
       arraySpanMethod({ rowIndex, columnIndex }) {

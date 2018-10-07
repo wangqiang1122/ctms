@@ -1,8 +1,8 @@
 <template>
     <div>
-      <div v-for="item in menuTop" class="menu"  @click="changeTab(item, 1)">
-        <p><img :src="item.icon_url" height="30" width="32"></p>
-        <p>{{item.project_name}}</p>
+      <div v-for="item in menuTop" class="menu"  @click="changeTab(item)">
+        <p><img :src="item.iconURL" height="30" width="32"></p>
+        <p>{{item.projectName}}</p>
       </div>
     </div>
 </template>
@@ -36,38 +36,39 @@ export default {
   methods: {
     checkPrivilege() {
       const privilege = storageService.getPrivilege();
-      let nav = storageService.getTopNav();
+      // let nav = storageService.getTopNav();
       const self = this;
       if (!privilege) {
         // 首次登录
-        authService.getPermissionList().then((resp) => {
+        authService.getProjects().then((resp) => {
           storageService.setPrivilege(resp);
           self.checkPrivilege();
         });
       } else {
-        this.menuTop = privilege.projects;
-        if (!nav) nav = this.menuTop[0];
-        this.changeTab(nav);
+        this.menuTop = privilege.projectList;
+        // if (!nav) nav = this.menuTop[0];
+        // this.changeTab(nav);
       }
     },
-    changeTab(item, c) {
+    changeTab(item) {
+      this.$router.push({ name: 'Main' });
       // 点击操作，可以切换页面到main；非点击操作（刷新），不改变router
-      if (c) {
-            /*
-             * tab右侧对应main页面
-             * 点击按钮时，将router置为main
-             * 如果为刷新，不改变router
-             * */
-        this.$router.push({ name: item.router_name });
-      }
-          /*
-           * 存储当前top层
-           * */
+      // if (c) {
+      //       /*
+      //        * tab右侧对应main页面
+      //        * 点击按钮时，将router置为main
+      //        * 如果为刷新，不改变router
+      //        * */
+      //   this.$router.push({ name: item.router_name });
+      // }
+      //     /*
+      //      * 存储当前top层
+      //      * */
       storageService.setTopNav(item);
-          /*
-           * UI更新
-           * */
-      this.activeTab = item.project_name;
+      //     /*
+      //      * UI更新
+      //      * */
+      // this.activeTab = item.project_name;
           /*
            * 不管是否跳转，通知更新数据
            * */

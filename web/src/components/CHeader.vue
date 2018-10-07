@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="logo-box">
-      <img src="../assets/img/logo.png" alt="logo" height="36" width="126">
+      <img src="../assets/img/logo.png" alt="logo" height="36" width="126" @click="logoCli">
     </div>
     <p class="item i1">
       <el-dropdown :hide-on-click="false" @command="handleCommand">
@@ -64,6 +64,10 @@
       });
     },
     methods: {
+      // logo 跳转
+      logoCli() {
+        this.$router.push({ path: '/' });
+      },
       // 添加跳转事件主页
       skip1() {
         this.$router.push({ path: '/' });
@@ -77,7 +81,7 @@
       initStorage() {
         const topNav = storageService.getTopNav();
         if (topNav) {
-          this.projectName = topNav.project_name;
+          this.projectName = topNav.projectName;
         }
       },
       getUserInfo() {

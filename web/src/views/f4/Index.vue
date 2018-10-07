@@ -9,9 +9,9 @@
         <el-select size="small" v-model="siteCode" placeholder="请选择">
           <el-option
             v-for="(item, i) in siteList"
-            :key="item.siteCode"
-            :label="item.siteDes"
-            :value="item.siteCode">
+            :key="item.siteId"
+            :label="item.siteName"
+            :value="item.siteId">
           </el-option>
         </el-select>
       </span>
@@ -20,32 +20,38 @@
         <el-select size="small" v-model="subjectCode" placeholder="请选择">
           <el-option
             v-for="(item, i) in subjectList"
-            :key="item.subjectCode"
-            :label="item.subjectCode"
-            :value="item.subjectCode">
+            :key="item.subjectId"
+            :label="item.subjectId"
+            :value="item.subjectId">
           </el-option>
         </el-select>
       </span>
       <el-button class="btn" size="mini" type="primary" @click="addVisitOpen">新增访视</el-button>
+      <el-button class="btn" size="mini" type="primary" @click="delVisitOpen">删除最新访视</el-button>
     </div>
     <!-- content -->
     <div class="content">
       <el-table :data="visitList" border stripe v-loading="loading1" element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading" style="width: 100%">
-        <el-table-column v-for="(value, key) in visitFields" :key="key" v-if="key === 'crf'" :prop="key" :label="value.vName" min-width="50px" align="left">
+        <el-table-column v-for="(value, key) in visitFields"
+                         :key="key" v-if="key === 'CRFInfo'"
+                         :prop="key" :label="value.visitName" min-width="50px" align="left">
           <template slot-scope="scope">
             <span>{{scope.row[key]}}</span>
           </template>
         </el-table-column>
-        <el-table-column v-for="(value, key) in visitFields" :key="key" v-if="key !== 'crf'" :prop="key" :label="value.vName"
+        <el-table-column v-for="(value, key) in visitFields"
+                         :key="key" v-if="key !== 'CRFInfo'" :prop="key" :label="value.visitName"
                          min-width="50px" align="center">
-          <el-table-column :prop="key" :label="value.vTime"
+          <el-table-column :prop="key" :label="value.visitTime"
                            min-width="50px" align="center">
             <template slot-scope="scope">
-              <span @click="jumpCRFView(scope.row[key])"><img v-if="scope.row[key].status === 0" src="../../assets/img/wenjian1.png" height="20" width="20"/></span>
-              <span @click="jumpCRFView(scope.row[key])"><img v-if="scope.row[key].status === 1" src="../../assets/img/wenjian2.png" height="20" width="20"/></span>
-              <span @click="jumpCRFView(scope.row[key])"><img v-if="scope.row[key].status === 2" src="../../assets/img/wenjian3.png" height="20" width="20"/></span>
-              <span @click="jumpCRFView(scope.row[key])"><img v-if="scope.row[key].status === 3" src="../../assets/img/wenjian4.png" height="20" width="20"/></span>
+              <div v-for="(value, index) in scope.row[key]" :key="index">
+                <span @click="jumpCRFView(value)"><img v-if="value.state === 0" src="../../assets/img/wenjian1.png" height="20" width="20"/></span>
+                <span @click="jumpCRFView(value)"><img v-if="value.state === 1" src="../../assets/img/wenjian2.png" height="20" width="20"/></span>
+                <span @click="jumpCRFView(value)"><img v-if="value.state === 2" src="../../assets/img/wenjian3.png" height="20" width="20"/></span>
+                <span @click="jumpCRFView(value)"><img v-if="value.state === 3" src="../../assets/img/wenjian4.png" height="20" width="20"/></span>
+              </div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -55,14 +61,14 @@
     <el-dialog title="新增访视" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <el-form label-position="right" label-width="90px" :model="nextVisit">
         <el-form-item label="受试者:">
-          <el-input disabled v-model="nextVisit.subjectCode"></el-input>
+          <el-input disabled v-model="nextVisit.subjectId"></el-input>
         </el-form-item>
         <el-form-item label="下一个访视:">
           <el-select style="width: 100%" v-model="nextVisit.visitCode" placeholder="请选择">
             <el-option
               v-for="item in nextVisitList"
               :key="item.visitCode"
-              :label="item.visitDes"
+              :label="item.visitName"
               :value="item.visitCode">
             </el-option>
           </el-select>
@@ -114,9 +120,14 @@
         // ---------- next visit 信息
         nextVisitList: [],
         nextVisit: {
-          subjectCode: null,
+          subjectId: null,
           visitCode: null,
           date: null,
+        },
+        // --------- del visit 信息
+        delVisit: {
+          subjectId: null,
+          visitId: null,
         },
       };
     },
@@ -129,19 +140,21 @@
     methods: {
       getSiteSubjectList() {
         f1Service.getSiteSubjectList().then((resp) => {
+          console.log(resp);
           if (resp) {
             this.siteList = resp.site;
             this.subjects = resp.subject;
-            this.siteCode = this.siteList[0].siteCode;
+            this.siteCode = this.siteList[0].siteId;
           }
         });
       },
       getVisitProcess(subjectCode) {
         this.loading1 = true;
         f4Service.getVisitProcess(subjectCode).then((resp) => {
+          console.log(resp);
           if (resp) {
-            this.visitFields = resp.fields;
-            this.visitList = resp.list;
+            this.visitFields = resp.head;
+            this.visitList = resp.body;
           }
           this.loading1 = false;
         });
@@ -149,7 +162,7 @@
       getNextVisitList() {
         f4Service.getVisitList(this.subjectCode, 1).then((resp) => {
           if (resp) {
-            this.nextVisitList = resp.list;
+            this.nextVisitList = resp.nextVisit;
             this.nextVisit.visitCode = this.nextVisitList[0].visitCode;
           }
         });
@@ -157,11 +170,11 @@
       addVisitOpen() {
         this.getNextVisitList();
         this.dialogVisible = true;
-        this.nextVisit.subjectCode = this.subjectCode;
+        this.nextVisit.subjectId = this.subjectCode;
         this.nextVisit.date = null;
       },
       addVisitPost() {
-        if (!this.nextVisit.subjectCode || !this.nextVisit.visitCode || !this.nextVisit.date) {
+        if (!this.nextVisit.subjectId || !this.nextVisit.visitCode || !this.nextVisit.date) {
           this.$message({ message: '请填写完整信息！', type: 'warning' });
           return;
         }
@@ -171,6 +184,39 @@
             this.getVisitProcess(this.subjectCode);
             this.dialogVisible = false;
           }
+        });
+      },
+      delVisitOpen() {
+        const lastHead = Object.keys(this.visitFields)[Object.keys(this.visitFields).length - 1];
+        const obj = this.visitFields[Object.keys(this.visitFields)[Object.keys(this.visitFields).length - 1]];
+        const visitId = obj.visitId;
+        if (lastHead === 'crf') {
+          return;
+        }
+        this.$confirm('是否永久删除此条数据?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: (action) => {
+            if (action === 'confirm') {
+              this.delVisit.visitId = visitId;
+              this.delVisit.subjectId = this.subjectCode;
+              f4Service.delVisit(this.delVisit).then(() => {
+                this.visitFields[Object.keys(this.visitFields)[Object.keys(this.visitFields).length - 1]] = {};
+                delete this.visitFields[Object.keys(this.visitFields)[Object.keys(this.visitFields).length - 1]];
+              });
+            }
+          },
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
       },
       jumpCRFView(obj) {
@@ -184,7 +230,7 @@
           if (this.subjectList.length === 0) {
             this.subjectCode = null;
           } else {
-            this.subjectCode = this.subjectList[0].subjectCode;
+            this.subjectCode = this.subjectList[0].subjectId;
             this.getVisitProcess(this.subjectCode);
           }
         }

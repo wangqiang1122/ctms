@@ -6,7 +6,7 @@
     </div>
     <div class="btn">
       <el-button class="btn" size="mini" type="primary" @click="goBack">返回</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.write === 1" type="primary" @click="edit">编辑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑</el-button>
     </div>
     <!------ 输入框 ----->
     <el-table :data="tableStructure" border stripe style="width: 100%" v-loading="loading1" element-loading-text="拼命加载中">
@@ -90,21 +90,22 @@
     created() {
       this.dataId = this.$route.params.id;
       this.currAction = storageService.getLv3Nav();
-      this.getStructure(this.currAction.form_id);
+      this.getStructure(this.currAction.formId);
+      this.getRight(this.currAction.formId);
     },
     methods: {
       getStructure(formId) {
         this.loading1 = true;
         f1Service.getF1Structure(formId).then((resp) => {
-          this.tableStructure = resp.fields;
-          this.getDetail(this.currAction.form_id, this.dataId);
+          this.tableStructure = resp.fieldList;
+          this.getDetail(this.currAction.formId, this.dataId);
         });
       },
       getDetail(formId, dataId) {
         f1Service.getF1Detail(formId, dataId).then((resp) => {
           this.loading1 = false;
-          this.btnRights = resp.rights;
-          this.tableValue = resp.tBody;
+          // this.btnRights = resp.rights;
+          this.tableValue = resp.body;
           this.tableStructure.forEach((v) => {
             Object.keys(this.tableValue).forEach((v1) => {
               if (v.id === v1) {
@@ -117,11 +118,17 @@
           });
         });
       },
+      getRight(formId) {
+        f1Service.getPermissonsCRF(formId).then((resp) => {
+          this.btnRights = resp;
+        });
+      },
       edit() {
         this.JumpOuterPage('F1_Edit', this.routeParams);
       },
       goBack() {
-        this.JumpPage(this.currAction, 'List');
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
       },
       changeRadio(row, index) {
         /**

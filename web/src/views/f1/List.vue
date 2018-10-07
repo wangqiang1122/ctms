@@ -20,6 +20,8 @@
         <el-button :type="searchType === 2 ? 'success': 'info'" size="mini" round @click="active(2)">等于</el-button>
         <el-button :type="searchType === 3 ? 'success': 'info'" size="mini" round @click="active(3)">小于</el-button>
         <el-button :type="searchType === 4 ? 'success': 'info'" size="mini" round @click="active(4)">包含</el-button>
+        <el-button :type="orderTypeId === 0 ? 'success': 'info'" size="mini" round @click="cliZ(0)">正序</el-button>
+        <el-button :type="orderTypeId === 1 ? 'success': 'info'" size="mini" round @click="cliZ(1)">倒序</el-button>
         <el-input size="small" v-model="searchContent" :clearable="true" style="width: 200px;"></el-input>
         <el-button size="mini" @click="reset">重置</el-button>
       </span>
@@ -62,6 +64,7 @@
         searchField: null,
         searchContent: null,
         searchType: null,
+        orderTypeId: null,
         // --- pagination ----
         currentPage: 1,
         totalNum: 1,
@@ -73,7 +76,7 @@
     created() {
       this.currAction = storageService.getLv3Nav();
       this.search();
-      this.getStructure(this.currAction.form_id);
+      this.getStructure(this.currAction.formId);
     },
     methods: {
       search(cp) {
@@ -105,6 +108,10 @@
         this.searchType = t;
         this.search();
       },
+      cliZ(t) {
+        this.orderTypeId = t;
+        this.search();
+      },
       handleCurrentChange(val) {
         this.currentPage = val;
         this.search(this.currentPage);
@@ -115,6 +122,7 @@
       },
       cellClick(row, column) {
         if (column.property === 'id') {
+          console.log(this.currAction);
           this.JumpPage(this.currAction, 'View', { id: row[column.property] });
         } else {
           this.searchField = column.property;
