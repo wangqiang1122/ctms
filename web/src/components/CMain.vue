@@ -85,7 +85,7 @@
     },
     methods: {
       initStorage() {
-        authService.getMenus(storageService.getTopNav().projectId).then((val) => {
+        authService.getMenus(storageService.getTopNav().projectDB).then((val) => {
           this.privilege = val.parentMenuList;
           if (this.privilege) {
             this.updateTab(this.privilege);
@@ -113,8 +113,9 @@
         /*
          * 进入功能层
          * */
+        console.log(item);
         storageService.setLv3Nav(item);
-        this.$router.push({ name: item.formCode });
+        this.$router.push({ name: item.menuModel });
       },
     },
   };

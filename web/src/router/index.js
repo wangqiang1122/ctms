@@ -96,7 +96,7 @@ const router = new Router({
     },
     {
       path: '/main/f2/view',
-      name: 'F2_View',
+      name: 'CRFList', // F2_View
       component: F2View,
     },
     {
@@ -109,16 +109,16 @@ const router = new Router({
       name: 'F2_Audit',
       component: F2Audit,
     },
-    /* *********************** f3 ***************************** */
+    /* *********************** f3 访视日程表 ***************************** */
     {
       path: '/main/f3/index',
-      name: 'F3_Index',
+      name: 'VisitSchedule',
       component: F3Index,
     },
-    /* *********************** f4 ***************************** */
+    /* *********************** f4 访视进程表 ***************************** */
     {
       path: '/main/f4/index',
-      name: 'F4_List',
+      name: 'VisitProcess',
       component: F4List,
     },
     /* *********************** 开发文档 ***************************** */

@@ -4,9 +4,9 @@ import { MessageBox } from 'element-ui';
 
 export default {
   // 获取表数据接结构
-  getF2Structure() {
-    // const db = storageService.getTopNav().projectDB;
-    return api.get('form-struct1').then((resp) => {
+  getF2Structure(formId) {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`form-struct/${db}/${formId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -32,11 +32,9 @@ export default {
     });
   },
   // 获取指定数据
-  getF2Detail() {
-    // formId, dataId
-    // const db = storageService.getTopNav().projectDB;
-    // ${db}/${formId}/${dataId}
-    return api.get('records').then((resp) => {
+  getF2Detail(formId, dataId) {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`records/${db}/${formId}/${dataId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -175,11 +173,10 @@ export default {
     });
   },
   // 质疑列表
-  listQuery() {
+  listQuery(formId, dataId) {
     // formId, dataId
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}/${dataId}
-    return api.get('queries').then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`queries/${db}/${formId}/${dataId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

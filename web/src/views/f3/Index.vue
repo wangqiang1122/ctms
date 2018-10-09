@@ -13,18 +13,18 @@
       <el-table :data="tableData" border stripe v-loading="loading1" element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading" style="width: 100%">
         <el-table-column v-for="(value, key) in tableHead"
-                         :key="key" v-if="key === 'crf'"
+                         :key="key" v-if="key === 'CRFInfo'"
                          :prop="key" :label="value.visitName" min-width="50px" align="left">
           <template slot-scope="scope">
             <span>{{scope.row[key]}}</span>
           </template>
         </el-table-column>
-        <el-table-column v-for="(value, key) in tableHead" :key="key" v-if="key !== 'crf'" :prop="key" :label="value.visitName"
+        <el-table-column v-for="(value, key) in tableHead" :key="key" v-if="key !== 'CRFInfo'" :prop="key" :label="value.visitName"
                          min-width="50px" align="center">
           <el-table-column :prop="key" :label="value.visitCode"
                            min-width="50px" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row[key].status}}</div>
+              <div>{{scope.row[key].visitType}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -68,7 +68,8 @@
       this.getFormList(this.currAction.form_id);
       this.topnav = storageService.getTopNav();
       bus.$emit('TAB_CHANGED');
-      bus.$emit('TITLE_ITEM', { isShow: true });
+      bus.$emit('TITLE_ITEM', { isShow: false });
+      bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '' });
     },
     methods: {
       getFormList(fromID) {

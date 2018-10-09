@@ -9,9 +9,9 @@
         <el-select size="small" v-model="siteCode" placeholder="请选择">
           <el-option
             v-for="(item, i) in siteList"
-            :key="item.siteId"
+            :key="item.siteCode"
             :label="item.siteName"
-            :value="item.siteId">
+            :value="item.siteCode">
           </el-option>
         </el-select>
       </span>
@@ -64,12 +64,12 @@
           <el-input disabled v-model="nextVisit.subjectId"></el-input>
         </el-form-item>
         <el-form-item label="下一个访视:">
-          <el-select style="width: 100%" v-model="nextVisit.visitCode" placeholder="请选择">
+          <el-select style="width: 100%" v-model="nextVisit.visitId" placeholder="请选择">
             <el-option
               v-for="item in nextVisitList"
-              :key="item.visitCode"
+              :key="item.visitId"
               :label="item.visitName"
-              :value="item.visitCode">
+              :value="item.visitId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -121,7 +121,7 @@
         nextVisitList: [],
         nextVisit: {
           subjectId: null,
-          visitCode: null,
+          visitId: null,
           date: null,
         },
         // --------- del visit 信息
@@ -144,7 +144,7 @@
           if (resp) {
             this.siteList = resp.site;
             this.subjects = resp.subject;
-            this.siteCode = this.siteList[0].siteId;
+            this.siteCode = this.siteList[0].siteCode;
           }
         });
       },
@@ -163,7 +163,7 @@
         f4Service.getVisitList(this.subjectCode, 1).then((resp) => {
           if (resp) {
             this.nextVisitList = resp.nextVisit;
-            this.nextVisit.visitCode = this.nextVisitList[0].visitCode;
+            this.nextVisit.visitId = this.nextVisitList[0].visitId;
           }
         });
       },
@@ -174,7 +174,7 @@
         this.nextVisit.date = null;
       },
       addVisitPost() {
-        if (!this.nextVisit.subjectId || !this.nextVisit.visitCode || !this.nextVisit.date) {
+        if (!this.nextVisit.subjectId || !this.nextVisit.visitId || !this.nextVisit.date) {
           this.$message({ message: '请填写完整信息！', type: 'warning' });
           return;
         }
@@ -220,7 +220,8 @@
         });
       },
       jumpCRFView(obj) {
-        this.JumpOuterPage('F2_View', obj);
+        console.log(obj);
+        this.JumpOuterPage('CRFList', obj);
       },
     },
     watch: {

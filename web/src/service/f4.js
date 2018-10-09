@@ -4,8 +4,8 @@ import { MessageBox } from 'element-ui';
 
 export default {
   getVisitProcess(subjectId) {
-    const db = storageService.getTopNav().projectId;
-    return api.get(`visit-process1/${db}`, { params: { subjectId } }).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`visit-process/${db}`, { params: { subjectId } }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -15,10 +15,10 @@ export default {
       return resp.result;
     });
   },
-  getVisitList(subjectId, type) {
-    const db = storageService.getTopNav().projectId;
+  getVisitList(subjectId) {
+    const db = storageService.getTopNav().projectDB;
     // type: 0：all；1：next
-    return api.get(`visits-next/${db}`, { params: { subjectId, type } }).then((resp) => {
+    return api.get(`visit-next/${db}`, { params: { subjectId } }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -29,7 +29,7 @@ export default {
     });
   },
   addVisit(params) {
-    const db = storageService.getTopNav().projectId;
+    const db = storageService.getTopNav().projectDB;
     return api.post(`visits/${db}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
@@ -41,7 +41,7 @@ export default {
     });
   },
   delVisit(val) {
-    const db = storageService.getTopNav().projectId;
+    const db = storageService.getTopNav().projectDB;
     return api.delete(`visits/${db}`, { params: val }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {

@@ -4,7 +4,7 @@ import { MessageBox } from 'element-ui';
 
 export default {
   getSiteSubjectList() {
-    const db = storageService.getTopNav().projectId;
+    const db = storageService.getTopNav().projectDB;
     return api.get(`site-subject/${db}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {

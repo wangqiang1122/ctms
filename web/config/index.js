@@ -28,16 +28,14 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: process.env.PORT || 8080,
+    port: process.env.PORT || 8081,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://60.205.180.79:8080/mockjsdata/3/',
-        // target: 'http://192.168.1.11/',
-        // target: 'http://47.104.97.226:7002/',
-        // target: 'http://47.104.176.145:8080/mockjsdata/1/',
+        // target: 'http://60.205.180.79:8080/mockjsdata/3/',
+        target: 'http://60.205.180.79:8080/ctms/',
         changeOrigin: true,
       },
     },

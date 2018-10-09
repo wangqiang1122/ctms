@@ -8,7 +8,7 @@ export default {
     return api.post('login', params).then((resp) => {
       if (resp.code === 200 && resp.result) {
         storage.setAccount(resp.result);
-        window.location.href = `http://${window.location.host}/console/#/`;
+        window.location.href = `http://${window.location.host}/#/`;
       } else {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -83,9 +83,9 @@ export default {
     });
   },
   // CRF表用户权限
-  getPermissons(Id) {
-    // const db = storage.getTopNav().projectDB;
-    return api.get('permissions', { params: { formId: Id } }).then((resp) => {
+  getPermissons(Id, recordId) {
+    const db = storage.getTopNav().projectDB;
+    return api.get(`permissions/${db}/${Id}/${recordId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

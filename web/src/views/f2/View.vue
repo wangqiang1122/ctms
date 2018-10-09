@@ -41,74 +41,74 @@
     <el-table :data="tableStructure" border stripe style="width: 100%" :span-method="objectSpanMethod" :show-header="false" :row-class-name="tableRowClassName" @cell-click="cellClick" v-loading="loading1" element-loading-text="拼命加载中">
       <el-table-column label="No." align="left" width="60px">
         <template slot-scope="scope">
-          <span v-if="scope.row.rowSpan === '1'">{{scope.row.id}}</span>
-          <span v-if="scope.row.rowSpan === '0'">{{scope.row.fieldName}}</span>
-          <span v-if="scope.row.rowSpan === '0'" class="italic">{{scope.row.qIns}}</span>
+          <span v-if="scope.row.rowSpan === 1">{{scope.row.fieldCode}}</span>
+          <span v-if="scope.row.rowSpan === 0">{{scope.row.fieldName}}</span>
+          <span v-if="scope.row.rowSpan === 0" class="italic">{{scope.row.remark}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="fieldName" label="问题" align="right">
         <template slot-scope="scope">
           <div>{{scope.row.fieldName}}</div>
-          <div class="italic">{{scope.row.qIns}}</div>
+          <div class="italic">{{scope.row.remark}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="valueType" label="值">
+      <el-table-column prop="fieldType" label="值">
         <template slot-scope="scope">
-          {{scope.row.valueType}}
-          <!-- 1静态文本 -->
-          <div v-if="scope.row.valueType.type == 1" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
-          <!-- 2文本输入 -->
-          <el-input disabled style="width: 250px;" v-if="scope.row.valueType.type == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.valueType.tail">{{scope.row.valueType.tail}}</el-button></el-input>
-          <!-- 3数字类型 -->
-          <el-input-number disabled v-if="scope.row.valueType.type == 3" size="small" v-model="scope.row.value.value"></el-input-number>
-          <!-- 4日期 -->
-          <el-date-picker
-            disabled
-            v-if="scope.row.valueType.type == 4"
-            size="small"
-            v-model="scope.row.value.value"
-            type="date"
-            placeholder="选择日期"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
-          </el-date-picker>
-          <!-- 5单选 -->
-          <el-checkbox-group disabled class="new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
-          </el-checkbox-group>
-          <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
-          </el-checkbox-group>
-          <!-- 6下拉 -->
-          <el-select disabled v-if="scope.row.valueType.type == 6" size="small" v-model="scope.row.value.value" placeholder="请选择">
-            <el-option
-              v-for="item in scope.row.valueType.content"
-              :key="item.code_id"
-              :label="item.code_des"
-              :value="item.code_des">
-            </el-option>
-          </el-select>
-          <!-- 7多选 -->
-          <el-checkbox-group disabled v-if="scope.row.valueType.type == 7 && scope.row.valueType.content.length < 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
-          </el-checkbox-group>
-          <el-checkbox-group class="endways" disabled v-if="scope.row.valueType.type == 7 && scope.row.valueType.content.length >= 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
-          </el-checkbox-group>
-          <!-- 8自动生成 -->
-          <div v-if="scope.row.valueType.type == 8" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
-          <!-- 9文件 -->
-          <!-- 10长文本 -->
-          <el-input disabled v-if="scope.row.valueType.type == 10" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>
-          <!-- 11时间 -->
-          <el-time-picker
-            disabled
-            v-if="scope.row.valueType.type == 11"
-            size="small"
-            v-model="scope.row.value.value"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
-          </el-time-picker>
+          {{scope.row.fieldType}}
+          <!-- 0静态文本 -->
+          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
+          <!--&lt;!&ndash; 2文本输入 &ndash;&gt;-->
+          <!--<el-input disabled style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.valueType.tail">{{scope.row.valueType.tail}}</el-button></el-input>-->
+          <!--&lt;!&ndash; 1数字类型 &ndash;&gt;-->
+          <!--<el-input-number disabled v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value.value"></el-input-number>-->
+          <!--&lt;!&ndash; 4日期 &ndash;&gt;-->
+          <!--<el-date-picker-->
+            <!--disabled-->
+            <!--v-if="scope.row.fieldType.typeId == 4"-->
+            <!--size="small"-->
+            <!--v-model="scope.row.value.value"-->
+            <!--type="date"-->
+            <!--placeholder="选择日期"-->
+            <!--:format="scope.row.fieldType.content"-->
+            <!--:value-format="scope.row.fieldType.content">-->
+          <!--</el-date-picker>-->
+          <!--&lt;!&ndash; 6单选 &ndash;&gt;-->
+          <!--<el-checkbox-group disabled class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">-->
+            <!--<el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.fieldType.content">{{item.code_des}}{{item.remark}}</el-checkbox>-->
+          <!--</el-checkbox-group>-->
+          <!--<el-checkbox-group disabled class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">-->
+            <!--<el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.fieldType.content">{{item.code_des}}{{item.remark}}</el-checkbox>-->
+          <!--</el-checkbox-group>-->
+          <!--&lt;!&ndash; 7下拉 &ndash;&gt;-->
+          <!--<el-select disabled v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value.value" placeholder="请选择">-->
+            <!--<el-option-->
+              <!--v-for="item in scope.row.fieldType.content"-->
+              <!--:key="item.code_id"-->
+              <!--:label="item.code_des"-->
+              <!--:value="item.code_des">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+          <!--&lt;!&ndash; 8多选 &ndash;&gt;-->
+          <!--<el-checkbox-group disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value.value">-->
+            <!--<el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.fieldType.content">{{item.code_des}}{{item.remark}}</el-checkbox>-->
+          <!--</el-checkbox-group>-->
+          <!--<el-checkbox-group class="endways" disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length >= 3" size="small" v-model="scope.row.value.value">-->
+            <!--<el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.fieldType.content">{{item.code_des}}{{item.remark}}</el-checkbox>-->
+          <!--</el-checkbox-group>-->
+          <!--&lt;!&ndash; 8自动生成 &ndash;&gt;-->
+          <!--<div v-if="scope.row.fieldType.typeId == 8" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>-->
+          <!--&lt;!&ndash; 9文件 &ndash;&gt;-->
+          <!--&lt;!&ndash; 3长文本 &ndash;&gt;-->
+          <!--<el-input disabled v-if="scope.row.fieldType.typeId == 3" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>-->
+          <!--&lt;!&ndash; 5时间 &ndash;&gt;-->
+          <!--<el-time-picker-->
+            <!--disabled-->
+            <!--v-if="scope.row.fieldType.typeId == 5"-->
+            <!--size="small"-->
+            <!--v-model="scope.row.value.value"-->
+            <!--:format="scope.row.fieldType.content"-->
+            <!--:value-format="scope.row.fieldType.content">-->
+          <!--</el-time-picker>-->
         </template>
       </el-table-column>
       <el-table-column v-if="hasViolation" prop="rule" label="违反规则" align="left">
@@ -284,24 +284,26 @@
         this.routeParams = this.$route.params;
         storageService.setRouteParams(this.$route.params);
       }
-      this.getStructure(this.routeParams.formId, this.routeParams.dataId);
+      console.log(this.routeParams);
+      this.getStructure(this.routeParams.formId, this.routeParams.recordId);
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.routeParams.formId + this.routeParams.formName, tag: 'View:' });
       this.listQuery();
-      this.getRight(this.routeParams.formId);
+      this.getRight(this.routeParams.formId, this.routeParams.recordId);
     },
     methods: {
       getStructure(formId, dataId) {
         this.loading1 = true;
+        console.log(dataId);
         f2Service.getF2Structure(formId, dataId).then((resp) => {
           this.loading1 = false;
           if (resp) {
             this.tableStructure = resp.fieldList;
-            this.getDetail(this.routeParams.formId, this.routeParams.dataId);
+            this.getDetail(this.routeParams.formId, this.routeParams.recordId);
           }
         });
       },
-      getRight(formId) {
-        authService.getPermissons(formId).then((resp) => {
+      getRight(formId, recordId) {
+        authService.getPermissons(formId, recordId).then((resp) => {
           this.btnRights = resp;
         });
       },
@@ -408,7 +410,7 @@
       },
       objectSpanMethod({ row, columnIndex }) {
         const d = row.rowSpan;
-        if (d === '0') {
+        if (d === 0) {
           if (columnIndex === 0) {
             return {
               rowspan: 1,
@@ -423,7 +425,7 @@
         }
       },
       tableRowClassName({ row }) {
-        if (row.rowSpan === '0') {
+        if (row.rowSpan === 0) {
           return 'warning-row';
         }
         return '';
@@ -456,7 +458,7 @@
         });
       },
       listQuery() {
-        f2Service.listQuery(this.routeParams.formId, this.routeParams.dataId).then((resp) => {
+        f2Service.listQuery(this.routeParams.formId, this.routeParams.recordId).then((resp) => {
           if (resp) {
             this.queryList = resp.querylist;
           }
