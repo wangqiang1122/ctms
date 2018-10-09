@@ -357,10 +357,11 @@
           }).then(({ value }) => {
             const obj = {
               violationId: ruleObj.violationId,
-              violationResponse: value,
+              response: value,
             };
             this.getStructure(this.routeParams.formId);
-            this.confirmRule(this.routeParams.formId, this.routeParams.dataId, obj);
+            // this.routeParams.formId, this.routeParams.dataId,
+            this.confirmRule(obj);
           }).catch(() => {
             this.$message({
               type: 'info',

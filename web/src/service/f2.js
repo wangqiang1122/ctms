@@ -90,9 +90,11 @@ export default {
       return true;
     });
   },
-  confirmRule(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f2/confirmRule/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+  // 确定规则
+  confirmRule(params) {
+    const db = storageService.getTopNav().projectId;
+    // /${formId}/${dataId}/${db}
+    return api.post(`violations/${db}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
