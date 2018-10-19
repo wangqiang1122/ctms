@@ -40,6 +40,7 @@ export default {
       return true;
     });
   },
+    // 删除罪行访视
   delVisit(val) {
     const db = storageService.getTopNav().projectDB;
     return api.delete(`visits/${db}`, { params: val }).then((resp) => {

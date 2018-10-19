@@ -16,11 +16,10 @@ export default {
     });
   },
   // 非crf表列表
-  getF1List(params) {
+  getF1List(formId, params) {
     // formId
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}
-    return api.get('recordslist2', { params }).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`records/${db}/${formId}`, { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -31,11 +30,10 @@ export default {
     });
   },
   // 获取非crf制定数据
-  getF1Detail() {
-    // formId, dataId
-    // const db = storageService.getTopNav().projectDB;
+  getF1Detail(formId, dataId) {
+    const db = storageService.getTopNav().projectDB;
     // /${db}/${formId}/${dataId}
-    return api.get('records2').then((resp) => {
+    return api.get(`records/${db}/${formId}/${dataId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -46,11 +44,10 @@ export default {
     });
   },
   // 数据结构
-  getF1Structure() {
-    // formId
-    // const db = storageService.getTopNav().projectDB;
+  getF1Structure(formId) {
+    const db = storageService.getTopNav().projectDB;
     // /${db}/${formId}
-    return api.get('form-struct2').then((resp) => {
+    return api.get(`form-struct/${db}/${formId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -60,9 +57,10 @@ export default {
       return resp.result;
     });
   },
+  // 增加数据非CRF表
   postF1(formId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f1/addRecord/db/${db}/form/${formId}`, params).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.post(`records/${db}/${formId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -72,9 +70,10 @@ export default {
       return true;
     });
   },
+  // 编辑新增受试者
   putF1(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.put(`f1/editRecord/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`records/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -85,10 +84,10 @@ export default {
     });
   },
   // 非Crf表去权限
-  getPermissonsCRF() {
+  getPermissonsCRF(formId) {
     // formId
-    // const db = storage.getTopNav().projectDB;
-    return api.get('permissionsList').then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`permissions/${db}/${formId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

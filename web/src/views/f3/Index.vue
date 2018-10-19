@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div style="overflow: hidden;margin-bottom: 20px">
+      <el-button class="btn" size="mini" @click="goBack" style="float: right">返回</el-button>
+    </div>
     <!-- title -->
     <div class="f3-title">
       <div class="f3-title-1">
@@ -68,10 +71,15 @@
       this.getFormList(this.currAction.form_id);
       this.topnav = storageService.getTopNav();
       bus.$emit('TAB_CHANGED');
-      bus.$emit('TITLE_ITEM', { isShow: false });
+      bus.$emit('TITLE_ITEM', { isShow: true });
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '' });
     },
     methods: {
+      goBack() {
+        // console.log(this.currAction);
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
+      },
       getFormList(fromID) {
         this.loading1 = true;
         f3Service.getF3List(fromID).then((res) => {

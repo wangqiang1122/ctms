@@ -70,33 +70,33 @@ const router = new Router({
     /* *********************** f1 ***************************** */
     {
       path: '/main/f1/list',
-      name: 'F1_List',
+      name: 'NoCRFList', // F1_List
       component: F1List,
     },
     {
       path: '/main/f1/add',
-      name: 'F1_Add',
+      name: 'NoCRFAdd', // F1_Add
       component: F1Add,
     },
     {
       path: '/main/f1/view/:id',
-      name: 'F1_View',
+      name: 'NoCRFView', // F1_View
       component: F1View,
     },
     {
       path: '/main/f1/edit/:id',
-      name: 'F1_Edit',
+      name: 'NoCRFEdit', // F1_Edit
       component: F1Edit,
     },
     /* *********************** f2 ***************************** */
     {
       path: '/main/f2/list',
-      name: 'F2_List',
+      name: 'CRFList',
       component: F2List,
     },
     {
       path: '/main/f2/view',
-      name: 'CRFList', // F2_View
+      name: 'F2_View', // F2_View
       component: F2View,
     },
     {

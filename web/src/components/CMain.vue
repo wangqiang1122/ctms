@@ -6,26 +6,26 @@
         <!-- 列表有数据 -->
         <el-row :gutter="20" v-if="menuRows" v-for="(m,i) in menuRows" :key="i">
           <el-col :span="6" class="box" v-if="mainMenus[i*4]">
-            <div class="a-block" :class="{ checked: blockId === i*4 }" @click="blockSub(i*4)">
-              <span class="a-icon"><img class="move1" :src="mainMenus[i*4].icon_url" height="48" width="48"></span>
+            <div class="a-block" :class="{ checked: blockId === i*4 }" @click="blockSub(i*4)" v-if="mainMenus[i*4].isRead == 1">
+              <span class="a-icon"><img class="move1" :src="mainMenus[i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[1+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 1+i*4 }" @click="blockSub(1+i*4)">
-              <span class="a-icon"><img class="move1" :src="mainMenus[1+i*4].icon_url" height="48" width="48"></span>
+            <div class="a-block" :class="{ checked: blockId === 1+i*4 }" @click="blockSub(1+i*4)" v-if="mainMenus[1+i*4].isRead == 1">
+              <span class="a-icon"><img class="move1" :src="mainMenus[1+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[1+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[2+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 2+i*4 }" @click="blockSub(2+i*4)">
-              <span class="a-icon"><img class="move1" :src="mainMenus[2+i*4].icon_url" height="48" width="48"></span>
+            <div class="a-block" :class="{ checked: blockId === 2+i*4 }" @click="blockSub(2+i*4)" v-if="mainMenus[2+i*4].isRead == 1">
+              <span class="a-icon"><img class="move1" :src="mainMenus[2+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[2+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[3+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 3+i*4 }" @click="blockSub(3+i*4)">
-              <span class="a-icon"><img class="move1" :src="mainMenus[3+i*4].icon_url" height="48" width="48"></span>
+            <div class="a-block" :class="{ checked: blockId === 3+i*4 }" @click="blockSub(3+i*4)" v-if="mainMenus[3+i*4].isRead == 1">
+              <span class="a-icon"><img class="move1" :src="mainMenus[3+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[3+i*4].menuName}}</span>
             </div>
           </el-col>
@@ -54,7 +54,7 @@
         <!-- 列表无数据 -->
         <div v-if="menuRows === null">项目未启动</div>
         <!-- 第一次启动 -->
-        <div v-if="menuRows === undefined">系统启动中，稍等片刻...</div>
+        <div v-if="menuRows === undefined">稍等片刻...</div>
       </div>
     </transition>
   </div>
@@ -113,7 +113,6 @@
         /*
          * 进入功能层
          * */
-        console.log(item);
         storageService.setLv3Nav(item);
         this.$router.push({ name: item.menuModel });
       },

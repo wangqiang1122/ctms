@@ -20,7 +20,7 @@
     <p class="item i4" v-show="isTime">
       <!--<img src="../assets/img/head-position.png" height="22" width="22"/>-->
       <!--<span class="el-link" @click="skip1">CTMS</span> / -->
-      <span @click="skip2">{{projectName}}</span>
+    <span @click="skip2">{{projectName}}</span>
     </p>
   </div>
 </template>
@@ -40,7 +40,7 @@
         projectName: '',
         tag: '', // 小字
         title: {}, // 标题
-        isTime: '', // 是否显示
+        isTime: true, // 是否显示
       };
     },
     created() {
@@ -60,8 +60,11 @@
       });
       // item 标题
       bus.$on('TITLE_ITEM', (val) => {
-        this.isTime = val.isShow;
+        if (val) {
+          this.isTime = val.isShow;
+        }
       });
+      this.initStorage();
     },
     methods: {
       // logo 跳转

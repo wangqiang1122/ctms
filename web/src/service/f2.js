@@ -17,11 +17,10 @@ export default {
     });
   },
   // 获取列表数据
-  getF2List(params) {
-    // formId
-    // const db = storageService.getTopNav().projectDB;
+  getF2List(formId, params) {
+    const db = storageService.getTopNav().projectDB;
     // /${db}/${formId}
-    return api.get('recordslist1', { params }).then((resp) => {
+    return api.get(`records/${db}/${formId}`, { params }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -45,11 +44,9 @@ export default {
     });
   },
   // 获取历史数据
-  getF2HistoryDetail() {
-    // formId, dataId
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}/${dataId}
-    return api.get('audit-records1').then((resp) => {
+  getF2HistoryDetail(formId, dataId) {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`audit-records/${db}/${formId}/${dataId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -60,11 +57,10 @@ export default {
     });
   },
   // 提交数据；1：接受数据；2：审核通过；3：锁定数据；4：解锁数据
-  getF2ChangeStatus(params) {
-    // formId, dataId,
-    // const db = storageService.getTopNav().projectDB;
+  getF2ChangeStatus(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
     // /${db}/${formId}/${dataId}
-    return api.get('crf-state', { params }).then((resp) => {
+    return api.put(`crf-state/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -74,11 +70,10 @@ export default {
       return resp;
     });
   },
-  putF2(params) {
-    // formId, dataId,
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}/${dataId}
-    return api.put('records', params).then((resp) => {
+  // 保存数据
+  putF2(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`records/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -88,9 +83,11 @@ export default {
       return true;
     });
   },
+  // 确认规则没有改
   confirmRule(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f2/confirmRule/db/${db}/form/${formId}/data/${dataId}`, params).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    // /${formId}/${dataId}
+    return api.put(`violations/${db}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -101,11 +98,9 @@ export default {
     });
   },
   // 新建质疑
-  createQuery(params) {
-    // formId, dataId
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}/${dataId}
-    return api.post('queries', params).then((resp) => {
+  createQuery(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
+    return api.post(`queries/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -116,11 +111,9 @@ export default {
     });
   },
   // 回复
-  responseQuery(params) {
-    // formId, dataId,
-    // const db = storageService.getTopNav().projectDB;
-    // ${db}/${formId}/${dataId}
-    return api.put('queries', params).then((resp) => {
+  responseQuery(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`queries/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -131,11 +124,9 @@ export default {
     });
   },
   // 关闭
-  closeQuery(params) {
-    // formId, dataId,
-    // const db = storageService.getTopNav().projectDB;
-    // /${db}/${formId}/${dataId}
-    return api.get('queries', { params }).then((resp) => {
+  closeQuery(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`queries/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -145,9 +136,10 @@ export default {
       return true;
     });
   },
+  // 删除质疑
   deleteQuery(formId, dataId, params) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f2/deleteQuery/db/${db}/form/${formId}/data/${dataId}`, { params }).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`queries/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -158,11 +150,9 @@ export default {
     });
   },
   // 编辑
-  editQuery(params) {
-    // formId, dataId,
-    // const db = storageService.getTopNav().projectDB;
-    // ${db}/${formId}/${dataId}
-    return api.get('queries', { params }).then((resp) => {
+  editQuery(formId, dataId, params) {
+    const db = storageService.getTopNav().projectDB;
+    return api.put(`queries/${db}/${formId}/${dataId}`, params).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

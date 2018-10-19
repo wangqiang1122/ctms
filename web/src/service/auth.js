@@ -20,7 +20,7 @@ export default {
   },
   // 登出
   logout() {
-    api.put('logout').then((resp) => {
+    api.get('logout').then((resp) => {
       if (resp.code === 200) {
         storage.clearAccount();
         storage.clearPrivilege();

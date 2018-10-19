@@ -8,7 +8,7 @@
       <span> 机构:
         <el-select size="small" v-model="siteCode" placeholder="请选择">
           <el-option
-            v-for="(item, i) in siteList"
+            v-for="(item) in siteList"
             :key="item.siteCode"
             :label="item.siteName"
             :value="item.siteCode">
@@ -28,6 +28,7 @@
       </span>
       <el-button class="btn" size="mini" type="primary" @click="addVisitOpen">新增访视</el-button>
       <el-button class="btn" size="mini" type="primary" @click="delVisitOpen">删除最新访视</el-button>
+      <el-button class="btn" size="mini" @click="goBack" style="float: right">返回</el-button>
     </div>
     <!-- content -->
     <div class="content">
@@ -134,13 +135,13 @@
     created() {
       this.topNav = storageService.getTopNav();
       this.currAction = storageService.getLv3Nav();
+      bus.$emit('TAB_CHANGED');
       // 获取机构、受试者列表
       this.getSiteSubjectList();
     },
     methods: {
       getSiteSubjectList() {
         f1Service.getSiteSubjectList().then((resp) => {
-          console.log(resp);
           if (resp) {
             this.siteList = resp.site;
             this.subjects = resp.subject;
@@ -151,10 +152,14 @@
       getVisitProcess(subjectCode) {
         this.loading1 = true;
         f4Service.getVisitProcess(subjectCode).then((resp) => {
-          console.log(resp);
           if (resp) {
             this.visitFields = resp.head;
             this.visitList = resp.body;
+            Object.keys(this.visitFields).forEach((key) => {
+              if (key !== 'CRFInfo') {
+                this.visitFields[key].visitTime = this.visitFields[key].visitTime.toString();
+              }
+            });
           }
           this.loading1 = false;
         });
@@ -220,8 +225,12 @@
         });
       },
       jumpCRFView(obj) {
-        console.log(obj);
-        this.JumpOuterPage('CRFList', obj);
+        this.JumpOuterPage('F2_View', obj);
+      },
+      goBack() {
+        // console.log(this.currAction);
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
       },
     },
     watch: {
