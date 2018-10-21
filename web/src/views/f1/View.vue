@@ -114,7 +114,7 @@
           this.tableValue = resp.body;
           this.tableStructure.forEach((v) => {
             Object.keys(this.tableValue).forEach((v1) => {
-              if (v.id === v1) {
+              if (v.fieldCode === v1) {
                 v.value = this.tableValue[v1];
                 if (v.fieldType.typeId === 6) {
                   v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];

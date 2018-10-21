@@ -1,9 +1,9 @@
 <template>
   <div class="f1-index">
     <!------ title ----->
-    <div class="title">
-      {{currAction.form_des}}列表
-    </div>
+    <!--<div class="title">-->
+      <!--{{currAction.form_des}}列表-->
+    <!--</div>-->
     <!------ head ------>
     <div class="head">
       <span class="search"> 搜索条件:

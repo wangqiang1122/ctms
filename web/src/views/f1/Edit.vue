@@ -1,9 +1,9 @@
 <template>
   <div class="f1-edit">
     <!------ title ----->
-    <div class="title">
-      编辑{{currAction.form_des}} #{{dataId}}
-    </div>
+    <!--<div class="title">-->
+      <!--编辑{{currAction.form_des}} #{{dataId}}-->
+    <!--</div>-->
     <!------ 输入框 ----->
     <el-table :data="tableStructure" border stripe style="width: 100%" v-loading="loading1" element-loading-text="拼命加载中">
       <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>

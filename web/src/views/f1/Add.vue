@@ -1,9 +1,9 @@
 <template>
   <div class="f1-add">
     <!------ title ----->
-    <div class="title">
-      {{currAction.sub_menu_name}}
-    </div>
+    <!--<div class="title">-->
+      <!--{{currAction.sub_menu_name}}-->
+    <!--</div>-->
     <!------ 输入框 ----->
     <el-table :data="tableStructure" border stripe style="width: 100%" v-loading="loading1" element-loading-text="拼命加载中">
       <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>
@@ -79,6 +79,8 @@
 <script>
   import storageService from '@/service/storage';
   import f1Service from '@/service/f1';
+  import bus from '@/utils/bus';
+
 
   export default {
     name: 'f1',
@@ -93,6 +95,7 @@
     created() {
       this.currAction = storageService.getLv3Nav();
       this.getStructure(this.currAction.formId);
+      bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '新增:' });
     },
     methods: {
       getStructure(formId) {
