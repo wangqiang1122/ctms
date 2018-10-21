@@ -3,9 +3,9 @@ import storageService from '@/service/storage';
 import { MessageBox } from 'element-ui';
 
 export default {
-  getVisitProcess(subjectCode) {
-    const db = storageService.getTopNav().project_db;
-    return api.get(`f4/listVisitProcess/db/${db}`, { params: { subjectCode } }).then((resp) => {
+  getVisitProcess(subjectId) {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`visit-process/${db}`, { params: { subjectId } }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -15,10 +15,10 @@ export default {
       return resp.result;
     });
   },
-  getVisitList(subjectCode, type) {
-    const db = storageService.getTopNav().project_db;
+  getVisitList(subjectId) {
+    const db = storageService.getTopNav().projectDB;
     // type: 0：all；1：next
-    return api.get(`f4/listVisit/db/${db}`, { params: { subjectCode, type } }).then((resp) => {
+    return api.get(`visit-next/${db}`, { params: { subjectId } }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -29,8 +29,21 @@ export default {
     });
   },
   addVisit(params) {
-    const db = storageService.getTopNav().project_db;
-    return api.post(`f4/addVisit/db/${db}`, params).then((resp) => {
+    const db = storageService.getTopNav().projectDB;
+    return api.post(`visits/${db}`, params).then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return true;
+    });
+  },
+    // 删除罪行访视
+  delVisit(val) {
+    const db = storageService.getTopNav().projectDB;
+    return api.delete(`visits/${db}`, { params: val }).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
