@@ -8,7 +8,7 @@ export default {
     return api.post('login', params).then((resp) => {
       if (resp.code === 200 && resp.result) {
         storage.setAccount(resp.result);
-        window.location.href = `http://${window.location.host}/#/`;
+        window.location.href = `http://${window.location.host}/console/#/main`;
       } else {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

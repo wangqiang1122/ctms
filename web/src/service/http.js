@@ -10,9 +10,9 @@ const axiosIns = axios.create({
 });
 
 if (process.env.NODE_ENV === 'development') {
-  axiosIns.defaults.baseURL = 'api/v1';
+  axiosIns.defaults.baseURL = '/api/v1';
 } else if (process.env.NODE_ENV === 'production') {
-  axiosIns.defaults.baseURL = 'api/v1';
+  axiosIns.defaults.baseURL = '/api/v1';
 }
 
 function errorMsgBox(statusText, msg) {
