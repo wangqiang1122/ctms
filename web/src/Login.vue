@@ -139,14 +139,14 @@ export default {
       }
       const clientInfo = { ...this.loginData };
       const b = new Base64.Base64();
-      clientInfo.password = b.encode(clientInfo.password);
+      clientInfo.userPwd = b.encode(clientInfo.userPwd);
       localStorage.setItem('_client', JSON.stringify(clientInfo));
     },
     getClient() {
       const b = new Base64.Base64();
       const clientInfo = JSON.parse(localStorage.getItem('_client'));
       if (clientInfo) {
-        clientInfo.password = b.decode(clientInfo.password);
+        clientInfo.userPwd = b.decode(clientInfo.userPwd);
         this.loginData = clientInfo;
       }
     },
