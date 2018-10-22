@@ -10,9 +10,9 @@ const axiosIns = axios.create({
 });
 
 if (process.env.NODE_ENV === 'development') {
-  axiosIns.defaults.baseURL = '/api/v1';
+  axiosIns.defaults.baseURL = 'api/v1';
 } else if (process.env.NODE_ENV === 'production') {
-  axiosIns.defaults.baseURL = '/api/v1';
+  axiosIns.defaults.baseURL = 'api/v1';
 }
 
 function errorMsgBox(statusText, msg) {
@@ -25,9 +25,6 @@ axiosIns.interceptors.request.use(
   (config) => {
     if (storage.getToken()) {
       config.headers.Authorization = storage.getToken();
-    }
-    if (config.url.indexOf('f0') < 0 && !storage.getAccount()) {
-      auth.logoutErr();
     }
     return config;
   },

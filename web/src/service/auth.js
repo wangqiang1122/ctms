@@ -3,11 +3,12 @@ import storage from '@/service/storage';
 import { MessageBox } from 'element-ui';
 
 export default {
+  // 登陆
   login(params) {
-    return api.post('f0/login', params).then((resp) => {
+    return api.post('login', params).then((resp) => {
       if (resp.code === 200 && resp.result) {
         storage.setAccount(resp.result);
-        window.location.href = `http://${window.location.host}/console/#/main`;
+        window.location.href = `http://${window.location.host}/#/`;
       } else {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
@@ -17,8 +18,9 @@ export default {
       return resp;
     });
   },
+  // 登出
   logout() {
-    api.put('f0/logout').then((resp) => {
+    api.get('logout').then((resp) => {
       if (resp.code === 200) {
         storage.clearAccount();
         storage.clearPrivilege();
@@ -43,9 +45,47 @@ export default {
       window.location.href = `http://${window.location.host}`;
     }
   },
+  // 老版菜单
   getPermissionList() {
     const accountId = storage.getAccount().id;
     return api.get('f0/menu', { params: { accountId } }).then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return resp.result;
+    });
+  },
+  // 获取项目信息
+  getProjects() {
+    return api.get('projects').then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return resp.result;
+    });
+  },
+  // 获取二级菜单层
+  getMenus(id) {
+    return api.get(`menus/${id}`).then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return resp.result;
+    });
+  },
+  // CRF表用户权限
+  getPermissons(Id, recordId) {
+    const db = storage.getTopNav().projectDB;
+    return api.get(`permissions/${db}/${Id}/${recordId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',

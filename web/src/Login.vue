@@ -28,9 +28,9 @@
                 <el-form :model="loginData" :rules="rules" ref="loginData">
                   <div class="section">
                     <label for="account" class="field-label">账&nbsp;&nbsp;&nbsp;&nbsp;号</label>
-                    <el-form-item prop="account" required>
+                    <el-form-item prop="userCode" required>
                       <label for="account" class="field prepend-icon">
-                        <input type="text" name="account" id="account" v-model.trim="loginData.account" class="gui-input"
+                        <input type="text" name="account" id="account" v-model.trim="loginData.userCode" class="gui-input"
                                placeholder="输入邮箱或手机号">
                         <label for="account" class="field-icon">
                           <i class="fa fa-user"></i>
@@ -40,9 +40,9 @@
                   </div>
                   <div class="section">
                     <label for="password" class="field-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
-                    <el-form-item prop="password" required>
+                    <el-form-item prop="userPwd" required>
                       <label for="password" class="field prepend-icon">
-                        <input type="password" name="password" v-model="loginData.password" id="password"
+                        <input type="password" name="userPwd" v-model="loginData.userPwd" id="password"
                                class="gui-input"
                                placeholder="输入密码"  @keyup.enter="loginRequest('loginData')">
                         <label for="password" class="field-icon">
@@ -80,14 +80,14 @@ export default {
   data() {
     return {
       loginData: {
-        account: '',
-        password: '',
+        userCode: '',
+        userPwd: '',
       },
       rules: {
-        account: [
+        userCode: [
           { validator: this.validateUserName, trigger: 'blur' },
         ],
-        password: [
+        userPwd: [
           { validator: this.validatePassword, trigger: 'blur' },
         ],
       },

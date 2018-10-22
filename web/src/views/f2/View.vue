@@ -5,108 +5,109 @@
     <!--</div>-->
     <div class="btn">
       <el-button class="btn" size="mini" type="primary" @click="goBack">返回</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.write === 1" type="primary" @click="edit">编辑CRF</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.audit === 1" type="primary" @click="jump">查看历史</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.DMQuery=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.verifyQuery=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑CRF</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isRead" type="primary" @click="jump">查看历史</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManage=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.analyze=== 1" type="primary">分析</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.submit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.DMAccept=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.verifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.unlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.lock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isSubmit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isUnlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isLock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
       <!--<el-button class="btn" size="mini" v-if="btnRights.delete=== 1" type="primary">删除</el-button>-->
     </div>
     <div class="el-table-wrap">
       <el-row>
         <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
-        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formDes}}</el-col>
-        <el-col :span="4" class="title">Rule Status: {{tHead.ruleStatus}}</el-col>
+        <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
+        <el-col :span="4" class="title">Rule Status: {{tHead.ruleState}}</el-col>
         <el-col :span="4" class="title">DCR: {{tHead.queryStatus}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">机构: {{tHead.siteDes}}</el-col>
+        <el-col :span="6" class="title">机构: {{tHead.siteName}}</el-col>
         <el-col :span="10" class="title">
           <el-row>
             <el-col :span="8" class="title">受试者: {{tHead.subjectCode}}</el-col>
-            <el-col :span="8" class="title">访视: {{tHead.visitDes}}</el-col>
+            <el-col :span="8" class="title">访视: {{tHead.visitName}}</el-col>
             <el-col :span="8" class="title">提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
-        <el-col :span="4" class="title">Accept: {{tHead.acceptBy}}</el-col>
-        <el-col :span="4" class="title">Verify: {{tHead.verifyBy}}</el-col>
+        <el-col :span="4" class="title">Accept: {{tHead.acceptOn}}</el-col>
+        <el-col :span="4" class="title">Verify: {{tHead.verifyOn}}</el-col>
       </el-row>
     </div>
     <!--  table CRF数据部分  -->
     <el-table :data="tableStructure" border stripe style="width: 100%" :span-method="objectSpanMethod" :show-header="false" :row-class-name="tableRowClassName" @cell-click="cellClick" v-loading="loading1" element-loading-text="拼命加载中">
       <el-table-column label="No." align="left" width="60px">
         <template slot-scope="scope">
-          <span v-if="scope.row.rowSpan === '1'">{{scope.row.id}}</span>
-          <span v-if="scope.row.rowSpan === '0'">{{scope.row.qName}}</span>
-          <span v-if="scope.row.rowSpan === '0'" class="italic">{{scope.row.qIns}}</span>
+          <span v-if="scope.row.rowSpan === 1">{{scope.row.fieldCode}}</span>
+          <span v-if="scope.row.rowSpan === 0">{{scope.row.fieldName}}</span>
+          <span v-if="scope.row.rowSpan === 0" class="italic">{{scope.row.remark}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="qName" label="问题" align="right">
+      <el-table-column prop="fieldName" label="问题" align="right">
         <template slot-scope="scope">
-          <div>{{scope.row.qName}}</div>
-          <div class="italic">{{scope.row.qIns}}</div>
+          <div>{{scope.row.fieldName}}</div>
+          <div class="italic">{{scope.row.remark}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="valueType" label="值">
+      <el-table-column prop="fieldType" label="值">
         <template slot-scope="scope">
-          <!-- 1静态文本 -->
-          <div v-if="scope.row.valueType.type == 1" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
+          <!--{{scope.row}}-->
+          <!-- 0静态文本 -->
+          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
           <!-- 2文本输入 -->
-          <el-input disabled style="width: 250px;" v-if="scope.row.valueType.type == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.valueType.tail">{{scope.row.valueType.tail}}</el-button></el-input>
-          <!-- 3数字类型 -->
-          <el-input-number disabled v-if="scope.row.valueType.type == 3" size="small" v-model="scope.row.value.value"></el-input-number>
+          <el-input disabled style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
+          <!-- 1数字类型 -->
+          <el-input-number disabled v-if="scope.row.fieldType.typeId == 1" size="small" value="scope.row.value.value"></el-input-number>
           <!-- 4日期 -->
           <el-date-picker
             disabled
-            v-if="scope.row.valueType.type == 4"
+            v-if="scope.row.fieldType.typeId == 4"
             size="small"
             v-model="scope.row.value.value"
             type="date"
             placeholder="选择日期"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
+            :format="scope.row.fieldType.content"
+            :value-format="scope.row.fieldType.content">
           </el-date-picker>
-          <!-- 5单选 -->
-          <el-checkbox-group disabled class="new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <!-- 6单选 -->
+          <el-checkbox-group disabled class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <!-- 6下拉 -->
-          <el-select disabled v-if="scope.row.valueType.type == 6" size="small" v-model="scope.row.value.value" placeholder="请选择">
+          <!-- 7下拉 -->
+          <el-select disabled v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value.value" placeholder="请选择">
             <el-option
-              v-for="item in scope.row.valueType.content"
-              :key="item.code_id"
-              :label="item.code_des"
-              :value="item.code_des">
+              v-for="item in scope.row.fieldType.content"
+              :key="item.codeId"
+              :label="item.codeValue1"
+              :value="item.codeValue1">
             </el-option>
           </el-select>
-          <!-- 7多选 -->
-          <el-checkbox-group disabled v-if="scope.row.valueType.type == 7 && scope.row.valueType.content.length < 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <!-- 8多选 -->
+          <el-checkbox-group disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <el-checkbox-group class="endways" disabled v-if="scope.row.valueType.type == 7 && scope.row.valueType.content.length >= 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <el-checkbox-group class="endways" disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length >= 3" size="small" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <!-- 8自动生成 -->
-          <div v-if="scope.row.valueType.type == 8" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
+          <div v-if="scope.row.fieldType.typeId == 8" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
           <!-- 9文件 -->
-          <!-- 10长文本 -->
-          <el-input disabled v-if="scope.row.valueType.type == 10" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>
-          <!-- 11时间 -->
+          <!-- 3长文本 -->
+          <el-input disabled v-if="scope.row.fieldType.typeId == 3" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>
+          <!-- 5时间 -->
           <el-time-picker
             disabled
-            v-if="scope.row.valueType.type == 11"
+            v-if="scope.row.fieldType.typeId == 5"
             size="small"
             v-model="scope.row.value.value"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
+            :format="scope.row.fieldType.content"
+            :value-format="scope.row.fieldType.content">
           </el-time-picker>
         </template>
       </el-table-column>
@@ -131,12 +132,12 @@
       </el-table-column>
       <el-table-column prop="queryType" label="类型" align="left">
         <template slot-scope="scope">
-          <span>{{scope.row.queryType}}</span>
+          <span>{{queryTypeArr[scope.row.queryType]}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="queryStatus" label="状态" align="left">
         <template slot-scope="scope">
-          <span>{{scope.row.queryStatus}}</span>
+          <span>{{queryStateIdArr[scope.row.queryType]}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="queryContent" label="质疑" align="left" min-width="200">
@@ -151,10 +152,10 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.response === 1" @click="handleClick(scope.row, 0)" type="text" size="small">回复</el-button>
-          <el-button v-if="scope.row.edit === 1" @click="handleClick(scope.row, 1)" type="text" size="small">编辑</el-button>
-          <el-button v-if="scope.row.close === 1" @click="handleClick(scope.row, 2)" type="text" size="small">关闭</el-button>
-          <el-button v-if="scope.row.delete === 1" @click="handleClick(scope.row, 3)" type="text" size="small">删除</el-button>
+          <el-button v-if="scope.row.isResponse === 1" @click="handleClick(scope.row, 0)" type="text" size="small">回复</el-button>
+          <el-button v-if="scope.row.isEdit === 1" @click="handleClick(scope.row, 1)" type="text" size="small">编辑</el-button>
+          <el-button v-if="scope.row.isClose === 1" @click="handleClick(scope.row, 2)" type="text" size="small">关闭</el-button>
+          <el-button v-if="scope.row.isDelete === 1" @click="handleClick(scope.row, 3)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -223,11 +224,16 @@
   import storageService from '@/service/storage';
   import f2Service from '@/service/f2';
   import bus from '@/utils/bus';
+  import authService from '@/service/auth';
+  import { queryStateId, queryType } from '@/data/constants';
+
 
   export default {
     name: 'f2',
     data() {
       return {
+        // 数字输入
+        num: '100',
         // -------- 缓存信息
         currAction: {},
         // -------- route params
@@ -267,6 +273,9 @@
         dialogVisible3: false,
         dialogVisible4: false,
         dialogVisible5: false,
+        queryStateIdArr: queryStateId,
+        queryTypeArr: queryType,
+        operateTypeId: '',
       };
     },
     created() {
@@ -277,41 +286,59 @@
         this.routeParams = this.$route.params;
         storageService.setRouteParams(this.$route.params);
       }
-      this.getStructure(this.routeParams.formId);
+      this.getStructure(this.routeParams.formId, this.routeParams.recordId);
+      bus.$emit('TAB_CHANGED');
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.routeParams.formId + this.routeParams.formName, tag: 'View:' });
       this.listQuery();
+      this.getRight(this.routeParams.formId, this.routeParams.recordId);
     },
     methods: {
-      getStructure(formId) {
+      getStructure(formId, dataId) {
         this.loading1 = true;
-        f2Service.getF2Structure(formId).then((resp) => {
+        f2Service.getF2Structure(formId, dataId).then((resp) => {
           this.loading1 = false;
           if (resp) {
-            this.tableStructure = resp.fields;
-            this.getDetail(this.routeParams.formId, this.routeParams.dataId);
+            this.tableStructure = resp.fieldList;
+            this.getDetail(this.routeParams.formId, this.routeParams.recordId);
           }
+        });
+      },
+      getRight(formId, recordId) {
+        authService.getPermissons(formId, recordId).then((resp) => {
+          this.btnRights = resp;
         });
       },
       getDetail(formId, dataId) {
         f2Service.getF2Detail(formId, dataId).then((resp) => {
           if (resp) {
-            this.tHead = resp.tHead;
-            this.tableValue = resp.tBody;
+            this.tHead = resp.CRFHeader;
+            this.tableValue = resp.body;
             this.hasViolation = false;
+            // 值
             this.tableStructure.forEach((v) => {
               Object.keys(this.tableValue).forEach((v1) => {
-                if (v.id === v1) {
+                if (v.fieldCode === v1) {
+                  if (!isNaN(this.tableValue[v1].value)) {
+                    this.tableValue[v1].value = Number(this.tableValue[v1].value);
+                  }
                   v.value = this.tableValue[v1];
-                  if (v.value.ruleLevel !== 0) {
+                  if (v.value.ruleLevel !== null) {
                     this.hasViolation = true;
                   }
-                  if (v.valueType.type === '5') {
-                    v.value.value = v.value.value ? [null, v.value.value] : [null];
+                  if (v.fieldType.typeId === 6) {
+                    v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
                   }
+                  if (!v.fieldType.content) {
+                    v.fieldType.content = [];
+                  }
+                  // if (v.fieldType.content.length > 0) {
+                  //   v.fieldType.content.forEach((item) => {
+                  //     item.codeId = item.codeId.toString();
+                  //   });
+                  // }
                 }
               });
             });
-            this.btnRights = resp.rights;
           }
         });
       },
@@ -342,10 +369,10 @@
           }).then(({ value }) => {
             const obj = {
               violationId: ruleObj.violationId,
-              violationResponse: value,
+              response: value,
             };
             this.getStructure(this.routeParams.formId);
-            this.confirmRule(this.routeParams.formId, this.routeParams.dataId, obj);
+            this.confirmRule(this.routeParams.formId, this.routeParams.recordId, obj);
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -356,7 +383,7 @@
       },
       changeStatus(status) {
         const params = {
-          manageType: status,
+          stateTypeId: status,
           reasonForChange: '',
         };
         this.$confirm('请再次确认该操作', '提示', {
@@ -364,9 +391,10 @@
           cancelButtonText: '取消',
           type: 'warning',
         }).then(() => {
-          f2Service.getF2ChangeStatus(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+          f2Service.getF2ChangeStatus(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
             if (resp) {
               this.getStructure(this.routeParams.formId);
+              this.getRight(this.routeParams.formId, this.routeParams.recordId);
               this.$message({
                 type: 'success',
                 message: '提交成功',
@@ -384,14 +412,16 @@
         this.JumpOuterPage('F2_Edit', this.routeParams);
       },
       goBack() {
-        this.JumpPage(this.currAction, 'List');
+        // console.log(this.currAction);
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
       },
       jump() {
         this.JumpOuterPage('F2_Audit');
       },
       objectSpanMethod({ row, columnIndex }) {
         const d = row.rowSpan;
-        if (d === '0') {
+        if (d === 0) {
           if (columnIndex === 0) {
             return {
               rowspan: 1,
@@ -406,7 +436,7 @@
         }
       },
       tableRowClassName({ row }) {
-        if (row.rowSpan === '0') {
+        if (row.rowSpan === 0) {
           return 'warning-row';
         }
         return '';
@@ -426,7 +456,7 @@
           queryType: this.queryType,
           queryContent: this.queryContent,
         };
-        f2Service.createQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+        f2Service.createQuery(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.dialogVisible = false;
             this.$message({
@@ -439,30 +469,34 @@
         });
       },
       listQuery() {
-        f2Service.listQuery(this.routeParams.formId, this.routeParams.dataId).then((resp) => {
+        f2Service.listQuery(this.routeParams.formId, this.routeParams.recordId).then((resp) => {
           if (resp) {
-            this.queryList = resp.query;
+            this.queryList = resp.queryList;
           }
         });
       },
       handleClick(row, type) {
         if (type === 0) {
           // 回复
-          this.responseQueryOpen(row.queryId);
+          this.responseQueryOpen(row.id);
           this.queryContentRow = row.queryContent;
+          this.operateTypeId = type;
         }
         if (type === 1) {
           // 编辑
-          this.editQueryOpen(row.queryId);
+          this.editQueryOpen(row.id);
           this.queryContentRow = row.queryContent;
+          this.operateTypeId = type;
         }
         if (type === 2) {
           // 关闭
-          this.closeQueryOpen(row.queryId);
+          this.closeQueryOpen(row.id);
+          this.operateTypeId = type;
         }
         if (type === 3) {
           // 删除
-          this.deleteQueryOpen(row.queryId);
+          this.deleteQueryOpen(row.id);
+          this.operateTypeId = type;
         }
       },
       responseQueryOpen(queryId) {
@@ -474,8 +508,9 @@
         const params = {
           queryId: this.queryId,
           responseContent: this.responseContent,
+          operateTypeId: this.operateTypeId,
         };
-        f2Service.responseQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+        f2Service.responseQuery(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.dialogVisible2 = false;
             this.listQuery();
@@ -494,8 +529,9 @@
       closeQuery() {
         const params = {
           queryId: this.queryId,
+          operateTypeId: this.operateTypeId,
         };
-        f2Service.closeQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+        f2Service.closeQuery(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.dialogVisible3 = false;
             this.listQuery();
@@ -514,8 +550,9 @@
       deleteQuery() {
         const params = {
           queryId: this.queryId,
+          operateTypeId: this.operateTypeId,
         };
-        f2Service.deleteQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+        f2Service.deleteQuery(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.dialogVisible4 = false;
             this.listQuery();
@@ -535,8 +572,9 @@
         const params = {
           queryId: this.queryId,
           queryContent: this.queryContentRow,
+          operateTypeId: this.operateTypeId,
         };
-        f2Service.editQuery(this.routeParams.formId, this.routeParams.dataId, params).then((resp) => {
+        f2Service.editQuery(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.dialogVisible5 = false;
             this.listQuery();

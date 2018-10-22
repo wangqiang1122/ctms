@@ -2,67 +2,71 @@
   <div class="f1-view">
     <!------ title ----->
     <div class="title">
-      查看{{currAction.form_des}} #{{dataId}}
+      <!--查看{{currAction.form_des}} #{{dataId}}-->
     </div>
     <div class="btn">
-      <el-button class="btn" size="mini" type="primary" @click="goBack">返回</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.write === 1" type="primary" @click="edit">编辑</el-button>
+      <el-button class="btn el-button" size="mini" type="primary" @click="goBack">返回</el-button>
+      <el-button class="btn el-button btnright" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑</el-button>
     </div>
     <!------ 输入框 ----->
     <el-table :data="tableStructure" border stripe style="width: 100%" v-loading="loading1" element-loading-text="拼命加载中">
-      <el-table-column prop="qName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>
-      <el-table-column prop="valueType" label="输入结果" min-width="200px">
+      <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>
+      <el-table-column prop="fieldType" label="输入结果" min-width="200px">
         <template slot-scope="scope">
-          <!-- 1静态文本 -->
-          <div v-if="scope.row.valueType.type == 1" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
+          <!--{{scope.row}}-->
+          <!-- 0静态文本 -->
+          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
           <!-- 2文本输入 -->
-          <el-input disabled style="width: 250px;" v-if="scope.row.valueType.type == 2" size="small" v-model="scope.row.value"><el-button v-if="scope.row.valueType.tail" slot="append">{{scope.row.valueType.tail}}</el-button></el-input>
-          <!-- 3数字类型 -->
-          <el-input-number disabled v-if="scope.row.valueType.type == 3" size="small" v-model="scope.row.value"></el-input-number>
+          <el-input disabled style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
+          <!-- 1数字类型 -->
+          <el-input-number disabled v-if="scope.row.fieldType.typeId == 1" size="small" value="scope.row.value.value"></el-input-number>
           <!-- 4日期 -->
           <el-date-picker
             disabled
-            v-if="scope.row.valueType.type == 4"
+            v-if="scope.row.fieldType.typeId == 4"
             size="small"
-            v-model="scope.row.value"
+            v-model="scope.row.value.value"
             type="date"
             placeholder="选择日期"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
+            :format="scope.row.fieldType.content"
+            :value-format="scope.row.fieldType.content">
           </el-date-picker>
-          <!-- 5单选 -->
-          <el-checkbox-group disabled class="new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <!-- 6单选 -->
+          <el-checkbox-group disabled class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.valueType.type == 5 && scope.row.valueType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <!-- 6下拉 -->
-          <el-select disabled v-if="scope.row.valueType.type == 6" size="small" v-model="scope.row.value" placeholder="请选择">
+          <!-- 7下拉 -->
+          <el-select disabled v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value.value" placeholder="请选择">
             <el-option
-              v-for="item in scope.row.valueType.content"
-              :key="item.code_id"
-              :label="item.code_des"
-              :value="item.code_des">
+              v-for="item in scope.row.fieldType.content"
+              :key="item.codeId"
+              :label="item.codeValue1"
+              :value="item.codeValue1">
             </el-option>
           </el-select>
-          <!-- 7多选 -->
-          <el-checkbox-group disabled v-if="scope.row.valueType.type == 7" size="small" v-model="scope.row.value">
-            <el-checkbox :label="item.code_id" :key="item.code_id" v-for="item in scope.row.valueType.content">{{item.code_des}}{{item.remark}}</el-checkbox>
+          <!-- 8多选 -->
+          <el-checkbox-group disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <!-- 8自动生成 -->
-          <div v-if="scope.row.valueType.type == 8" size="small">{{scope.row.valueType.content}}{{scope.row.valueType.tail}}</div>
+          <el-checkbox-group class="endways" disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length >= 3" size="small" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+          </el-checkbox-group>
+          <!-- 11自动生成 -->
+          <div v-if="scope.row.fieldType.typeId == 11" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
           <!-- 9文件 -->
-          <!-- 10长文本 -->
-          <el-input disabled v-if="scope.row.valueType.type == 10" type="textarea"  size="small" maxlength="200" v-model="scope.row.value" :rows="1" placeholder="限制200字"></el-input>
-          <!-- 11时间 -->
+          <!-- 3长文本 -->
+          <el-input disabled v-if="scope.row.fieldType.typeId == 3" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>
+          <!-- 5时间 -->
           <el-time-picker
             disabled
-            v-if="scope.row.valueType.type == 11"
+            v-if="scope.row.fieldType.typeId == 5"
             size="small"
-            v-model="scope.row.value"
-            :format="scope.row.valueType.content"
-            :value-format="scope.row.valueType.content">
+            v-model="scope.row.value.value"
+            :format="scope.row.fieldType.content"
+            :value-format="scope.row.fieldType.content">
           </el-time-picker>
         </template>
       </el-table-column>
@@ -73,6 +77,7 @@
 <script>
   import storageService from '@/service/storage';
   import f1Service from '@/service/f1';
+  import bus from '@/utils/bus';
 
   export default {
     name: 'f1',
@@ -90,38 +95,46 @@
     created() {
       this.dataId = this.$route.params.id;
       this.currAction = storageService.getLv3Nav();
-      this.getStructure(this.currAction.form_id);
+      this.getStructure(this.currAction.formId);
+      this.getRight(this.currAction.formId);
+      bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '查看:' });
     },
     methods: {
       getStructure(formId) {
         this.loading1 = true;
         f1Service.getF1Structure(formId).then((resp) => {
-          this.tableStructure = resp.fields;
-          this.getDetail(this.currAction.form_id, this.dataId);
+          this.tableStructure = resp.fieldList;
+          this.getDetail(this.currAction.formId, this.dataId);
         });
       },
       getDetail(formId, dataId) {
         f1Service.getF1Detail(formId, dataId).then((resp) => {
           this.loading1 = false;
-          this.btnRights = resp.rights;
-          this.tableValue = resp.tBody;
+          // this.btnRights = resp.rights;
+          this.tableValue = resp.body;
           this.tableStructure.forEach((v) => {
             Object.keys(this.tableValue).forEach((v1) => {
-              if (v.id === v1) {
+              if (v.fieldCode === v1) {
                 v.value = this.tableValue[v1];
-                if (v.valueType.type === '5') {
-                  v.value = v.value ? [null, v.value] : [null];
+                if (v.fieldType.typeId === 6) {
+                  v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
                 }
               }
             });
           });
         });
       },
+      getRight(formId) {
+        f1Service.getPermissonsCRF(formId).then((resp) => {
+          this.btnRights = resp;
+        });
+      },
       edit() {
-        this.JumpOuterPage('F1_Edit', this.routeParams);
+        this.JumpOuterPage('NoCRFEdit', this.routeParams);
       },
       goBack() {
-        this.JumpPage(this.currAction, 'List');
+        // this.JumpPage(this.currAction, 'List');
+        this.$router.back(-1);
       },
       changeRadio(row, index) {
         /**
@@ -154,5 +167,8 @@
   .btn {
     text-align: right;
     margin-bottom: 10px;
+  }
+  .btnright{
+    margin-right: 20px;
   }
 </style>

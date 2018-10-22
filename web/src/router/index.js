@@ -7,6 +7,12 @@ import Router from 'vue-router';
  *
  * */
 import Main from '@/views/Main';
+/* f0  - 主页
+ *
+ * 类似用户管理的功能，比较单纯的表结构，最常规的增删改查
+ *
+ * */
+import F0Index from '@/views/f0/index';
 
 /* f1  - 功能块1
  *
@@ -53,7 +59,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main',
+      name: 'F0_index',
+      component: F0Index,
     },
     {
       path: '/main',
@@ -63,33 +70,33 @@ const router = new Router({
     /* *********************** f1 ***************************** */
     {
       path: '/main/f1/list',
-      name: 'F1_List',
+      name: 'NoCRFList', // F1_List
       component: F1List,
     },
     {
       path: '/main/f1/add',
-      name: 'F1_Add',
+      name: 'NoCRFAdd', // F1_Add
       component: F1Add,
     },
     {
       path: '/main/f1/view/:id',
-      name: 'F1_View',
+      name: 'NoCRFView', // F1_View
       component: F1View,
     },
     {
       path: '/main/f1/edit/:id',
-      name: 'F1_Edit',
+      name: 'NoCRFEdit', // F1_Edit
       component: F1Edit,
     },
     /* *********************** f2 ***************************** */
     {
       path: '/main/f2/list',
-      name: 'F2_List',
+      name: 'CRFList',
       component: F2List,
     },
     {
       path: '/main/f2/view',
-      name: 'F2_View',
+      name: 'F2_View', // F2_View
       component: F2View,
     },
     {
@@ -102,16 +109,16 @@ const router = new Router({
       name: 'F2_Audit',
       component: F2Audit,
     },
-    /* *********************** f3 ***************************** */
+    /* *********************** f3 访视日程表 ***************************** */
     {
       path: '/main/f3/index',
-      name: 'F3_Index',
+      name: 'VisitSchedule',
       component: F3Index,
     },
-    /* *********************** f4 ***************************** */
+    /* *********************** f4 访视进程表 ***************************** */
     {
       path: '/main/f4/index',
-      name: 'F4_List',
+      name: 'VisitProcess',
       component: F4List,
     },
     /* *********************** 开发文档 ***************************** */

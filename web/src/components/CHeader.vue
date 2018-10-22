@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="logo-box">
+      <img src="../assets/img/logo.png" alt="logo" height="36" width="126" @click="logoCli">
+    </div>
     <p class="item i1">
       <el-dropdown :hide-on-click="false" @command="handleCommand">
         <span class="el-dropdown-link">
@@ -14,8 +17,10 @@
     <p class="item headerTitle"><span class="small">{{title.tag}}</span> {{title.sub_menu_name}}</p>
     <!--<p class="item i2"><img src="../assets/img/head-set-active.png" height="20" width="20"/><img src="../assets/img/head-set.png" height="20" width="20"/></p>-->
     <!--<p class="item i3"><img src="../assets/img/head-tip-active.png" height="20" width="20"/><img src="../assets/img/head-tip.png" height="20" width="20"/></p>-->
-    <p class="item i4"><img src="../assets/img/head-position.png" height="22" width="22"/>
-      <span class="el-link" @click="skip1">CTMS</span> / <span @click="skip2">{{projectName}}</span>
+    <p class="item i4" v-show="isTime">
+      <!--<img src="../assets/img/head-position.png" height="22" width="22"/>-->
+      <!--<span class="el-link" @click="skip1">CTMS</span> / -->
+    <span @click="skip2">{{projectName}}</span>
     </p>
   </div>
 </template>
@@ -35,12 +40,13 @@
         projectName: '',
         tag: '', // 小字
         title: {}, // 标题
+        isTime: true, // 是否显示
       };
     },
     created() {
       // 获取用户信息
       this.getUserInfo();
-      this.initStorage();
+      // this.initStorage();
       bus.$on('TAB_CHANGED', () => {
         this.initStorage();
       });
@@ -52,8 +58,19 @@
           this.title = storageService.getLv3Nav();
         }
       });
+      // item 标题
+      bus.$on('TITLE_ITEM', (val) => {
+        if (val) {
+          this.isTime = val.isShow;
+        }
+      });
+      this.initStorage();
     },
     methods: {
+      // logo 跳转
+      logoCli() {
+        this.$router.push({ path: '/' });
+      },
       // 添加跳转事件主页
       skip1() {
         this.$router.push({ path: '/' });
@@ -61,13 +78,13 @@
       // 添加跳转事件2
       skip2() {
         // 二级跳转必须回到首页才可以进行更新
-        this.$router.push({ path: '/' });
+        this.$router.push({ path: '/main' });
         bus.$emit('TAB_CHANGED');
       },
       initStorage() {
         const topNav = storageService.getTopNav();
         if (topNav) {
-          this.projectName = topNav.project_name;
+          this.projectName = topNav.projectName;
         }
       },
       getUserInfo() {
@@ -91,6 +108,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .logo-box {
+    background: #1DA8F0;
+    height: 60px;
+    padding-top: 12px;
+    cursor: pointer;
+    width: 150px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+  }
   .item {
     float: right;
     line-height: 60px;
@@ -134,7 +161,7 @@
 
   .i4 {
     float: left;
-    margin-left: 20px;
+    margin-left: 170px;
     font-size: 15px;
     color: #485E66;
   }
@@ -148,6 +175,7 @@
     width: 50%;
     font-size: 25px;
     color: #2B97EF;
+    position: absolute;
   }
   .headerTitle>.small {
     font-size: 15px;

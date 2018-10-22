@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <el-aside width="150px">
-      <c-sidebar></c-sidebar>
-    </el-aside>
+    <!--<el-aside width="150px">-->
+      <!--<c-sidebar></c-sidebar>-->
+    <!--</el-aside>-->
     <el-container>
       <el-header height="60px">
         <c-header></c-header>
