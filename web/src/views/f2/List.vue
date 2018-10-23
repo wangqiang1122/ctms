@@ -14,9 +14,9 @@
           <el-option
             :clearable="true"
             v-for="(item, i) in tableHead"
-            :key="item.id"
-            :label="item.qNo"
-            :value="item.id">
+            :key="item.fieldCode"
+            :label="item.fieldName"
+            :value="item.fieldCode">
           </el-option>
         </el-select>
         <el-button :type="searchTypeId === 1 ? 'success': 'info'" size="mini" round @click="active(1)">大于</el-button>
@@ -152,8 +152,8 @@
         if (column.property === 'id') {
           this.JumpOuterPage('F2_View', { formId: this.currAction.formId, formName: this.currAction.formName, recordId: row[column.property] });
         } else {
-          this.orderFieldCode = column.property;
-          this.searchContent = row[column.property];
+          this.searchFieldCode = column.label;
+          this.searchContent = row[column.label];
         }
       },
       headerClick(column) {
@@ -175,11 +175,11 @@
         this.totalNum = obj.totalNum;
       },
       reset() {
-        this.searchContent = null;
-        this.orderFieldCode = null;
-        this.searchTypeId = null;
-        this.orderTypeId = null;
-        this.searchFieldCode = null;
+        this.searchContent = '';
+        this.orderFieldCode = '';
+        this.searchTypeId = '';
+        this.orderTypeId = '';
+        this.searchFieldCode = '';
         this.resetXcache();
         this.search();
       },

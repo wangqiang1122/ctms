@@ -69,43 +69,43 @@ const router = new Router({
     },
     /* *********************** f1 ***************************** */
     {
-      path: '/main/f1/list',
+      path: '/main/NoCRFList',
       name: 'NoCRFList', // F1_List
       component: F1List,
     },
     {
-      path: '/main/f1/add',
+      path: '/main/NoCRFAdd',
       name: 'NoCRFAdd', // F1_Add
       component: F1Add,
     },
     {
-      path: '/main/f1/view/:id',
+      path: '/main/NoCRFView/:id',
       name: 'NoCRFView', // F1_View
       component: F1View,
     },
     {
-      path: '/main/f1/edit/:id',
+      path: '/main/NoCRFEdit/:id',
       name: 'NoCRFEdit', // F1_Edit
       component: F1Edit,
     },
     /* *********************** f2 ***************************** */
     {
-      path: '/main/f2/list',
+      path: '/main/CRFList',
       name: 'CRFList',
       component: F2List,
     },
     {
-      path: '/main/f2/view',
+      path: '/main/CRFView', // f2/view
       name: 'F2_View', // F2_View
       component: F2View,
     },
     {
-      path: '/main/f2/edit',
+      path: '/main/CRFEdit',
       name: 'F2_Edit',
       component: F2Edit,
     },
     {
-      path: '/main/f2/audit',
+      path: '/main/CRFAudit',
       name: 'F2_Audit',
       component: F2Audit,
     },

@@ -135,7 +135,7 @@
         if (column.property === 'siteId') {
           this.JumpPage('NoCRFView', { id: row[column.property] });
         } else {
-          this.searchTypeId = column.property;
+          this.searchFieldCode = column.property;
           this.searchContent = row[column.property];
         }
       },
@@ -156,11 +156,11 @@
         this.totalNum = obj.totalNum;
       },
       reset() {
-        this.searchContent = null;
-        this.searchFieldCode = null;
-        this.searchTypeId = null;
-        this.orderTypeId = null;
-        this.orderFieldCode = null;
+        this.searchContent = '';
+        this.searchFieldCode = '';
+        this.searchTypeId = '';
+        this.orderTypeId = '';
+        this.orderFieldCode = '';
         this.resetXcache();
         this.search();
       },

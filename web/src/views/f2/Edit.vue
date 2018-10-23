@@ -173,7 +173,7 @@
               Object.keys(this.tBody).forEach((v1) => {
                 if (v.fieldCode === v1) {
                   if (!isNaN(this.tBody[v1].value)) {
-                    this.tBody[v1].value = Number(this.tBody[v1].value);
+                    this.tBody[v1].value = this.tBody[v1].value === null ? this.tBody[v1].value : Number(this.tBody[v1].value);
                   }
                   v.value = this.tBody[v1];
                   if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {

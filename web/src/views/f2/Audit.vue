@@ -180,7 +180,7 @@
               Object.keys(this.tableValue).forEach((v1) => {
                 if (v.fieldCode === v1) {
                   if (!isNaN(this.tableValue[v1].value)) {
-                    this.tableValue[v1].value = Number(this.tableValue[v1].value);
+                    this.tableValue[v1].value = this.tableValue[v1].value === null ? this.tableValue[v1].value : Number(this.tableValue[v1].value);
                   }
                   v.value = this.tableValue[v1];
                   if (v.fieldType.typeId === 6) {
