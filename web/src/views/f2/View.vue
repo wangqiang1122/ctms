@@ -8,10 +8,10 @@
       <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑CRF</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isRead" type="primary" @click="jump">查看历史</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isManage=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="queryOpen(1)">DM接受</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.analyze=== 1" type="primary">分析</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isSubmit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="changeStatus(1)">审核质疑</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isUnlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isLock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
@@ -21,8 +21,8 @@
       <el-row>
         <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
         <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
-        <el-col :span="4" class="title">Rule Status: {{tHead.ruleState}}</el-col>
-        <el-col :span="4" class="title">DCR: {{tHead.queryStatus}}</el-col>
+        <el-col :span="4" class="title">通过规则: {{tHead.ruleState}}</el-col>
+        <el-col :span="4" class="title">通过质疑: {{tHead.queryStatus}}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">机构: {{tHead.siteName}}</el-col>
@@ -30,11 +30,11 @@
           <el-row>
             <el-col :span="8" class="title">受试者: {{tHead.subjectCode}}</el-col>
             <el-col :span="8" class="title">访视: {{tHead.visitName}}</el-col>
-            <el-col :span="8" class="title">提交: {{tHead.submitBy}}</el-col>
+            <el-col :span="8" class="title">数据提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
-        <el-col :span="4" class="title">Accept: {{tHead.acceptOn}}</el-col>
-        <el-col :span="4" class="title">Verify: {{tHead.verifyOn}}</el-col>
+        <el-col :span="4" class="title">数据接受: {{tHead.acceptOn}}</el-col>
+        <el-col :span="4" class="title">数据审核: {{tHead.verifyOn}}</el-col>
       </el-row>
     </div>
     <!--  table CRF数据部分  -->
@@ -116,7 +116,8 @@
           <span v-if="scope.row.value.ruleLevel === 1" class="el-icon-document" style="color: #E4A147"></span>
           <span v-if="scope.row.value.ruleLevel === 2" class="el-icon-document" style="color: #E4A147"></span>
           <span v-if="scope.row.value.ruleLevel === 3" class="el-icon-document" style="color: #F56C6C"></span>
-          <span>{{scope.row.value.ruleMessage}}</span>
+          <span @click="rule(scope.row)">{{scope.row.value.ruleMessage}}</span>
+          <!--<span @click="tong(event)" class="color"><i>通过信息</i></span>-->
         </template>
       </el-table-column>
     </el-table>
@@ -352,6 +353,13 @@
           }
         });
       },
+      tong() {
+        this.$alert('这是一段内容', '通过信息', {
+        });
+      },
+      rule(row) {
+        this.ruleConfirm(row.value, row);
+      },
       ruleConfirm(ruleObj, row) {
         if (ruleObj.ruleLevel === 3) {
           this.$message({
@@ -443,7 +451,7 @@
       },
       cellClick(row, column) {
         if (column.property === 'rule') {
-          this.ruleConfirm(row.value, row);
+          // this.ruleConfirm(row.value, row);
         }
       },
       queryOpen(type) {
@@ -641,7 +649,9 @@
     height: 48px;
     line-height: 48px;
   }
-
+  .color{
+    color: darkgreen;
+  }
   .el-table-wrap .title {
     padding: 0 10px;
   }

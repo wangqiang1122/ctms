@@ -165,7 +165,7 @@
         this.search();
       },
       goBack() {
-        this.$router.go(-1);
+        this.JumpPage('Main');
       },
       add() {
         this.JumpPage('NoCRFAdd');
