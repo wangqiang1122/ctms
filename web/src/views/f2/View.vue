@@ -116,8 +116,8 @@
           <span v-if="scope.row.value.ruleLevel === 1" class="el-icon-document" style="color: #E4A147"></span>
           <span v-if="scope.row.value.ruleLevel === 2" class="el-icon-document" style="color: #E4A147"></span>
           <span v-if="scope.row.value.ruleLevel === 3" class="el-icon-document" style="color: #F56C6C"></span>
-          <span @click="rule(scope.row)">{{scope.row.value.ruleMessage}}</span>
-          <!--<span @click="tong(event)" class="color"><i>通过信息</i></span>-->
+          <span @click="rule(scope.row)" class="pon">{{scope.row.value.ruleMessage}}</span>
+          <span @click="tong(scope.row.value)" class="color pon" v-if="scope.row.value.response"><i>通过信息</i></span>
         </template>
       </el-table-column>
     </el-table>
@@ -353,9 +353,10 @@
           }
         });
       },
-      tong() {
-        this.$alert('这是一段内容', '通过信息', {
-        });
+      tong(data) {
+        this.$alert(`<div>通过时间：${data.confirmOn}</div><div>管理人员：${data.confirmBy}</div><div>通过理由：${data.response}</div>`, '通过信息', {
+          dangerouslyUseHTMLString: true,
+        }).then().catch(() => {});
       },
       rule(row) {
         this.ruleConfirm(row.value, row);
@@ -667,5 +668,7 @@
     text-align: right;
     margin-bottom: 10px;
   }
-
+  .pon{
+    cursor: pointer;
+  }
 </style>
