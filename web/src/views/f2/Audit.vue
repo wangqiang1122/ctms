@@ -8,22 +8,22 @@
     </div>
     <div class="el-table-wrap">
       <el-row>
-        <el-col :span="6" class="title">CRF ID: {{tHead.CRFID}}</el-col>
+        <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
         <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
-        <el-col :span="4" class="title">Rule Status: {{tHead.ruleStatus}}</el-col>
-        <el-col :span="4" class="title">DCR: {{tHead.queryStatus}}</el-col>
+        <el-col :span="4" class="title">通过规则: {{tHead.ruleState}}</el-col>
+        <el-col :span="4" class="title">通过质疑: {{tHead.queryStatus}}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="6" class="title">机构: {{tHead.siteDes}}</el-col>
+        <el-col :span="6" class="title">机构: {{tHead.siteName}}</el-col>
         <el-col :span="10" class="title">
           <el-row>
-            <el-col :span="8" class="title">受试者: {{tHead.acceptBy}}</el-col>
+            <el-col :span="8" class="title">受试者: {{tHead.subjectCode}}</el-col>
             <el-col :span="8" class="title">访视: {{tHead.visitName}}</el-col>
-            <el-col :span="8" class="title">提交: {{tHead.submitBy}}</el-col>
+            <el-col :span="8" class="title">数据提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
-        <el-col :span="4" class="title">Accept: {{tHead.acceptBy}}</el-col>
-        <el-col :span="4" class="title">Verify: {{tHead.verifyBy}}</el-col>
+        <el-col :span="4" class="title">数据接受: {{tHead.acceptOn}}</el-col>
+        <el-col :span="4" class="title">数据审核: {{tHead.verifyOn}}</el-col>
       </el-row>
     </div>
     <!--  table CRF数据部分  -->
@@ -71,26 +71,26 @@
           </el-date-picker>
           <!-- 6单选 -->
           <el-checkbox-group disabled class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
-            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <el-checkbox-group disabled class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
-            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <!-- 7下拉 -->
           <el-select disabled v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value.value" placeholder="请选择">
             <el-option
               v-for="item in scope.row.fieldType.content"
               :key="item.codeId"
-              :label="item.codeValue1"
+              :label="item.codeValue1+item.codeValue2+item.remark"
               :value="item.codeValue1">
             </el-option>
           </el-select>
           <!-- 8多选 -->
           <el-checkbox-group disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <el-checkbox-group class="endways" disabled v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length >= 3" size="small" v-model="scope.row.value.value">
-            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <!-- 11自动生成 -->
           <div v-if="scope.row.fieldType.typeId == 11" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
