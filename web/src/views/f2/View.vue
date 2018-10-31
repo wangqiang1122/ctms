@@ -11,8 +11,8 @@
       <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.analyze=== 1" type="primary">分析</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isSubmit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="changeStatus(1)">审核质疑</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="changeStatus(1)">审核接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerify === 1" type="primary" @click="changeStatus(2)">审核通过</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isUnlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isLock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
       <!--<el-button class="btn" size="mini" v-if="btnRights.delete=== 1" type="primary">删除</el-button>-->
@@ -161,7 +161,7 @@
       </el-table-column>
     </el-table>
     <!--  -->
-    <el-dialog title="质疑" :visible.sync="dialogVisible" width="40%">
+    <el-dialog :title="isVerifyTitle" :visible.sync="dialogVisible" width="40%">
       <el-input
         type="textarea"
         :autosize="{ minRows: 3, maxRows: 3}"
@@ -235,6 +235,8 @@
       return {
         // 数字输入
         num: '100',
+        // 质疑title
+        isVerifyTitle: '',
         // -------- 缓存信息
         currAction: {},
         // -------- route params
@@ -456,6 +458,11 @@
         }
       },
       queryOpen(type) {
+        if (type === 0) {
+          this.isVerifyTitle = 'DM质疑';
+        } else if (type === 1) {
+          this.isVerifyTitle = '审核质疑';
+        }
         this.dialogVisible = true;
         this.queryContent = '';
         this.queryType = type;
