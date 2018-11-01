@@ -121,7 +121,9 @@
                 }
                 v.value = this.tableValue[v1];
                 if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {
-                  v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
+                  if (v.fieldType.content.length <= 3) {
+                    v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
+                  }
                 }
               }
             });
@@ -138,6 +140,9 @@
               params[v.fieldCode] = '';
             } else {
               params[v.fieldCode] = v.value.value[1];
+            }
+            if (!(v.value.value instanceof Array)) {
+              params[v.fieldCode] = v.value.value;
             }
           } else {
             params[v.fieldCode] = v.value.value;

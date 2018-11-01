@@ -177,7 +177,9 @@
                   }
                   v.value = this.tBody[v1];
                   if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {
-                    v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
+                    if (v.fieldType.content.length <= 3) {
+                      v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
+                    }
                   }
                 }
               });
@@ -195,6 +197,9 @@
               params[v.fieldCode] = '';
             } else {
               params[v.fieldCode] = v.value.value[1];
+            }
+            if (!(v.value.value instanceof Array)) {
+              params[v.fieldCode] = v.value.value;
             }
           } else {
             params[v.fieldCode] = v.value.value;
@@ -259,6 +264,8 @@
             }
             if (v.fieldType.skip.length >= 0) {
               v.fieldType.skip.forEach((v1) => {
+                if (!v.value.value) return;
+                if (v.value.value.length === 1) return;
                 if (v.value && v1.conditionValue === v.value.value[1].toString()) {
                   this.tableStructure.forEach((v2) => {
                     const arr = v1.skipFieldCode.split(',');
