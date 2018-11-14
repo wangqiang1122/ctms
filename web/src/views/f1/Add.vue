@@ -27,31 +27,31 @@
               :value-format="scope.row.fieldType.content">
             </el-date-picker>
             <!-- 6单选 -->
-            <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value">
-              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
-            </el-checkbox-group>
-            <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value">
-              <el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-radio>
-            </el-radio-group>
+          <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
+          </el-checkbox-group>
+          <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value">
+            <el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>
+          </el-radio-group>
             <!-- 7下拉 -->
             <el-select v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value" placeholder="请选择">
               <el-option
                 v-for="item in scope.row.fieldType.content"
                 :key="item.codeId"
-                :label="item.codeValue1"
-                :value="item.codeValue1">
+                :label="item.codeValue1+item.codeValue2+item.remark"
+                :value="item.codeValue1+item.codeValue2+item.remark">
               </el-option>
             </el-select>
             <!-- 8多选 -->
-            <el-checkbox-group v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value">
-              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+            <el-checkbox-group v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length < 3" size="small" v-model="scope.row.value.value">
+              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
             </el-checkbox-group>
             <el-checkbox-group
               class="endways"
-              v-if="scope.row.fieldType.typeId == 7 && scope.row.fieldType.content.length >= 3"
+              v-if="scope.row.fieldType.typeId == 8 && scope.row.fieldType.content.length >= 3"
               size="small"
-              v-model="scope.row.value">
-              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.remark}}</el-checkbox>
+              v-model="scope.row.value.value">
+              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
             </el-checkbox-group>
             <!-- 11自动生成 -->
             <div v-if="scope.row.fieldType.typeId == 11" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
@@ -104,8 +104,11 @@
           this.loading1 = false;
           this.tableStructure = resp.fieldList;
           this.tableStructure.forEach((v) => {
-            if (v.fieldType.type === 5) {
-              v.value = v.value ? [null, v.value] : [null];
+            if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {
+              v.value = { value: '' };
+              if (v.fieldType.content.length <= 3) {
+                v.value.value = [null];
+              }
             }
           });
         });
@@ -119,7 +122,10 @@
             if (v.value.length === 1) {
               params[v.fieldCode] = '';
             } else {
-              params[v.fieldCode] = v.value[1];
+              params[v.fieldCode] = v.value.value[1];
+            }
+            if (!(v.value.value instanceof Array)) {
+              params[v.fieldCode] = v.value.value;
             }
           } else {
             params[v.fieldCode] = v.value;
@@ -140,10 +146,10 @@
          * 将checkbox改造为可以反向选中的radio组件
          * */
           // checkbox以数组形式保存，第一个值为null，从第2个值开始存值
-        const arr = row.value;
+        const arr = row.value.value;
         if (arr.length === 3) {
           // 第二三个值不同，取后者
-          this.tableStructure[index].value = [null, arr[2]];
+          this.tableStructure[index].value.value = [null, arr[2]];
         }
       },
     },
