@@ -6,25 +6,25 @@
         <!-- 列表有数据 -->
         <el-row :gutter="20" v-if="menuRows" v-for="(m,i) in menuRows" :key="i">
           <el-col :span="6" class="box" v-if="mainMenus[i*4]">
-            <div class="a-block" :class="{ checked: blockId === i*4 }" @click="blockSub(i*4)" v-if="mainMenus[i*4].isRead == 1">
+            <div class="a-block" :class="{ checked: blockId === i*4 }" @click="blockSub(i*4, mainMenus)" v-if="mainMenus[i*4].isRead == 1">
               <span class="a-icon"><img class="move1" :src="mainMenus[i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[1+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 1+i*4 }" @click="blockSub(1+i*4)" v-if="mainMenus[1+i*4].isRead == 1">
+            <div class="a-block" :class="{ checked: blockId === 1+i*4 }" @click="blockSub(1+i*4, mainMenus)" v-if="mainMenus[1+i*4].isRead == 1">
               <span class="a-icon"><img class="move1" :src="mainMenus[1+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[1+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[2+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 2+i*4 }" @click="blockSub(2+i*4)" v-if="mainMenus[2+i*4].isRead == 1">
+            <div class="a-block" :class="{ checked: blockId === 2+i*4 }" @click="blockSub(2+i*4, mainMenus)" v-if="mainMenus[2+i*4].isRead == 1">
               <span class="a-icon"><img class="move1" :src="mainMenus[2+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[2+i*4].menuName}}</span>
             </div>
           </el-col>
           <el-col :span="6" class="box" v-if="mainMenus[3+i*4]">
-            <div class="a-block" :class="{ checked: blockId === 3+i*4 }" @click="blockSub(3+i*4)" v-if="mainMenus[3+i*4].isRead == 1">
+            <div class="a-block" :class="{ checked: blockId === 3+i*4 }" @click="blockSub(3+i*4, mainMenus)" v-if="mainMenus[3+i*4].isRead == 1">
               <span class="a-icon"><img class="move1" :src="mainMenus[3+i*4].iconURL" height="48" width="48"></span>
               <span class="a-text move1">{{mainMenus[3+i*4].menuName}}</span>
             </div>
@@ -32,22 +32,22 @@
           <!-- 列表展开内容 -->
           <transition name="slide-fade2">
             <div class="sub" :key="i*4" v-if="mainMenus[i*4] && blockId === i*4">
-              <span class="sub-item"  v-for="item in mainMenus[i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[i*4].childMenuList" @click="goToNextLevel(item)" v-if="item.isRead == 1">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="1+i*4" v-if="mainMenus[1+i*4] && blockId === 1+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[1+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[1+i*4].childMenuList" @click="goToNextLevel(item)" v-if="item.isRead == 1">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="2+i*4" v-if="mainMenus[2+i*4] && blockId === 2+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[2+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[2+i*4].childMenuList" @click="goToNextLevel(item)" v-if="item.isRead == 1">{{item.menuName}}</span>
             </div>
           </transition>
           <transition name="slide-fade2">
             <div class="sub" :key="3+i*4"  v-if="mainMenus[3+i*4] && blockId === 3+i*4">
-              <span class="sub-item"  v-for="item in mainMenus[3+i*4].childMenuList" @click="goToNextLevel(item)">{{item.menuName}}</span>
+              <span class="sub-item"  v-for="item in mainMenus[3+i*4].childMenuList" @click="goToNextLevel(item)" v-if="item.isRead == 1">{{item.menuName}}</span>
             </div>
           </transition>
         </el-row>
@@ -102,7 +102,11 @@
         }
         this.blockId = null;
       },
-      blockSub(idx) {
+      blockSub(idx, data) {
+        if (data[idx].childMenuList.length === 0) {
+          console.log(data[idx]);
+          return;
+        }
         if (this.blockId === idx) {
           this.blockId = null;
         } else {

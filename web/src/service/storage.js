@@ -1,4 +1,4 @@
-import { ACCOUNT, TOKEN, PRIVILEGE, TOP_NAV, LV3_NAV, ROUTE_PARAMS } from '@/data/constants';
+import { ACCOUNT, TOKEN, PRIVILEGE, TOP_NAV, LV3_NAV, ROUTE_PARAMS, FirstLevel } from '@/data/constants';
 
 
 export default {
@@ -51,6 +51,16 @@ export default {
   },
   clearRouteParams() {
     localStorage.removeItem(ROUTE_PARAMS);
+  },
+  /*
+   * 一级菜单信息
+   * */
+  getFirstLevel: () => JSON.parse(localStorage.getItem(FirstLevel)),
+  setFirstLevel: (obj) => {
+    localStorage.setItem(FirstLevel, JSON.stringify(obj));
+  },
+  clearFirstLevel: () => {
+    localStorage.removeItem(FirstLevel);
   },
   /*
    * token

@@ -33,8 +33,8 @@
             <el-col :span="8" class="title">数据提交: {{tHead.submitBy}}</el-col>
           </el-row>
         </el-col>
-        <el-col :span="4" class="title">数据接受: {{tHead.acceptOn}}</el-col>
-        <el-col :span="4" class="title">数据审核: {{tHead.verifyOn}}</el-col>
+        <el-col :span="4" class="title">数据接受: {{tHead.acceptBy}}</el-col>
+        <el-col :span="4" class="title">数据审核: {{tHead.verifyBy}}</el-col>
       </el-row>
     </div>
     <!--  table CRF数据部分  -->
@@ -56,7 +56,7 @@
         <template slot-scope="scope">
           <!--{{scope.row}}-->
           <!-- 0静态文本 -->
-          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
+          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.value.value}}{{scope.row.fieldType.tail}}</div>
           <!-- 2文本输入 -->
           <el-input disabled style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
           <!-- 1数字类型 -->
@@ -96,7 +96,7 @@
             <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <!-- 8自动生成 -->
-          <div v-if="scope.row.fieldType.typeId == 8" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
+          <div v-if="scope.row.fieldType.typeId == 8" size="small">{{scope.row.value.value}}{{scope.row.fieldType.tail}}</div>
           <!-- 9文件 -->
           <!-- 3长文本 -->
           <el-input disabled v-if="scope.row.fieldType.typeId == 3" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>
@@ -284,7 +284,7 @@
       };
     },
     created() {
-      this.currAction = storageService.getLv3Nav();
+      // this.currAction = storageService.getLv3Nav();
       if (Object.keys(this.$route.params).length === 0) {
         this.routeParams = storageService.getRouteParams();
       } else {

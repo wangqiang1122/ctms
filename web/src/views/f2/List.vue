@@ -43,7 +43,7 @@
             {{scope.row[item.fieldCode]}}
           </template>
         </el-table-column>
-        <el-table-column v-if="showIns" v-for="item in tableHead2" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="50px">
+        <el-table-column v-if="showIns" v-for="item in tableHead2" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="50px" sortable>
           <el-table-column :prop="item.fieldName" :label="item.fieldCode">
             <template slot-scope="scope">
               {{scope.row[item.fieldCode]}}
@@ -85,7 +85,7 @@
         layout: this.PAGINATION_LAYOUT,
         showIns: true,
         // 倒序cache
-        Xcache: {},
+        Xcache: '',
       };
     },
     created() {
@@ -115,9 +115,9 @@
           this.tableHead = resp.head;
           this.tableData = resp.body;
           this.resetPage(resp.page);
-          if (Object.keys(this.Xcache).length === 0) {
-            this.resetXcache();
-          }
+          // if (Object.keys(this.Xcache).length === 0) {
+          //   this.resetXcache();
+          // }
           for (let i = 0; i < this.tableHead.length; i += 1) {
             if (this.tableHead[i].isCRFField === 1) {
               this.tableHead1 = this.tableHead.slice(0, i);
@@ -157,16 +157,21 @@
         }
       },
       headerClick(column) {
-        if (this.Xcache[column.property] === 0) {
+        // this.Xcache[column.property]
+        if (this.Xcache === 1) {
+          this.orderTypeId = '';
+        } else if (this.Xcache === 0) {
           this.orderTypeId = 1;
-        } else if (this.Xcache[column.property] === 1) {
-          this.orderTypeId = 0;
         } else {
-          this.orderTypeId = 1;
+          this.orderTypeId = 0;
         }
-        this.Xcache[column.property] = this.orderTypeId;
         if (column.property.indexOf('Q') !== -1) {
-          this.orderFieldCode = column.property;
+          if (this.Xcache === 1) {
+            this.orderFieldCode = '';
+          } else {
+            this.orderFieldCode = column.property;
+          }
+          this.Xcache = this.orderTypeId;
           this.search();
         }
       },
@@ -188,8 +193,11 @@
       },
       resetXcache() {
         Object.keys(this.tableData[0]).forEach((v) => {
+          // if (v.indexOf('Q') !== -1) {
+          //   this.Xcache[v] = '';
+          // }
           if (v.indexOf('Q') !== -1) {
-            this.Xcache[v] = '';
+            this.Xcache = '';
           }
         });
       },

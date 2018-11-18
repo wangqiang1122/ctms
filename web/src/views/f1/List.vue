@@ -35,7 +35,7 @@
     <div class="content">
       <el-table :data="tableData" @cell-click="cellClick" @header-click="headerClick" border stripe v-loading="loading1"
                 element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" style="width: 100%">
-        <el-table-column v-for="item in tableHead" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="50px">
+        <el-table-column v-for="item in tableHead" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="130px" sortable>
           <template slot-scope="scope">
             <!--{{item}}<br>-->
             <!--{{scope.row}}-->
@@ -75,7 +75,7 @@
         pageSizes: this.PAGINATION_SIZES,
         layout: this.PAGINATION_LAYOUT,
         // 倒序缓存
-        Xcache: {},
+        Xcache: '',
       };
     },
     created() {
@@ -104,9 +104,9 @@
           this.loading1 = false;
           this.tableHead = resp.head;
           this.tableData = resp.body;
-          if (Object.keys(this.Xcache).length === 0) {
-            this.resetXcache();
-          }
+          // if (Object.keys(this.Xcache).length === 0) {
+          //   this.resetXcache();
+          // }
           this.resetPage(resp.page);
         });
       },
@@ -132,7 +132,8 @@
         this.search(this.currentPage);
       },
       cellClick(row, column) {
-        if (column.property === 'siteId') {
+        if (column.property === 'id') {
+          console.log(row);
           this.JumpPage('NoCRFView', { id: row[column.property] });
         } else {
           this.searchFieldCode = column.property;
@@ -141,14 +142,15 @@
       },
       headerClick(column) {
         this.orderFieldCode = column.property;
-        if (this.Xcache[column.property] === 1) {
-          this.orderTypeId = 0;
-        } else if (this.Xcache[column.property] === 0) {
+        if (this.Xcache === 1) {
+          this.orderTypeId = '';
+          this.orderFieldCode = '';
+        } else if (this.Xcache === 0) {
           this.orderTypeId = 1;
         } else {
           this.orderTypeId = 0;
         }
-        this.Xcache[column.property] = this.orderTypeId;
+        this.Xcache = this.orderTypeId;
         this.search();
       },
       resetPage(obj) {
@@ -171,8 +173,11 @@
         this.JumpPage('NoCRFAdd');
       },
       resetXcache() {
-        this.tableHead.forEach((v) => {
-          this.Xcache[v.fieldCode] = '';
+        // this.tableHead.forEach((v) => {
+        //   this.Xcache[v.fieldCode] = '';
+        // });
+        this.tableHead.forEach(() => {
+          this.Xcache = '';
         });
       },
     },

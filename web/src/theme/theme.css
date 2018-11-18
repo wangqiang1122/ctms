@@ -130,7 +130,12 @@
   width: auto;
   overflow-y: auto;
 }
-
+.el-table--enable-row-hover .el-table__body tr:hover>td{ /* hover高亮*/
+  background-color: #ffff00;
+}
+.content .cell {
+  cursor: pointer;
+}
 
 /* ---------------------------------------------------- 新增全局class --------------------------------------------- */
 .footer {

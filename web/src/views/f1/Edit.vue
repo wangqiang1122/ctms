@@ -9,13 +9,13 @@
       <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>
       <el-table-column prop="fieldType" label="输入结果" min-width="200px">
         <template slot-scope="scope">
-          <!--{{scope.row}}-->
+          {{scope.row}}
           <!-- 0静态文本 -->
-          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
+          <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.value.value}}{{scope.row.fieldType.tail}}</div>
           <!-- 2文本输入 -->
           <el-input style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value" :disabled="false"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
           <!-- 1数字类型 -->
-          <el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value.value"  @change="numberChange(scope.row.value)"></el-input-number>
+          <el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value.value" ></el-input-number>
           <!-- 4日期 -->
           <el-date-picker
             v-if="scope.row.fieldType.typeId == 4"
@@ -54,7 +54,7 @@
             <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
           <!-- 11自动生成 -->
-          <div v-if="scope.row.fieldType.typeId == 11" size="small">{{scope.row.fieldType.content}}{{scope.row.fieldType.tail}}</div>
+          <div v-if="scope.row.fieldType.typeId == 11" size="small">{{scope.row.value.value}}{{scope.row.fieldType.tail}}</div>
           <!-- 9文件 -->
           <!-- 3长文本 -->
           <el-input v-if="scope.row.fieldType.typeId == 3" type="textarea"  size="small" maxlength="200" v-model="scope.row.value.value" :rows="3" placeholder="限制200字"></el-input>

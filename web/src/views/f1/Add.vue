@@ -30,7 +30,7 @@
           <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
             <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value">
+          <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
             <el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>
           </el-radio-group>
             <!-- 7下拉 -->
@@ -62,7 +62,7 @@
             <el-time-picker
               v-if="scope.row.fieldType.typeId == 5"
               size="small"
-              v-model="scope.row.value.value"
+              v-model="scope.row.value"
               :format="scope.row.fieldType.content"
               :value-format="scope.row.fieldType.content">
             </el-time-picker>

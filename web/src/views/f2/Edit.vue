@@ -291,7 +291,9 @@
     text-align: center;
     margin: 15px 0;
   }
-
+  .f2-view {
+    background-color: burlywood;
+  }
   .head span {
     font-weight: 500;
     font-size: 18px;

@@ -21,6 +21,7 @@
       <!--<img src="../assets/img/head-position.png" height="22" width="22"/>-->
       <!--<span class="el-link" @click="skip1">CTMS</span> / -->
     <span @click="skip2">{{projectName}}</span>
+    <span @click="skip2" v-if="FirstLevel">> {{title.sub_menu_name}}</span>
     </p>
   </div>
 </template>
@@ -41,6 +42,7 @@
         tag: '', // 小字
         title: {}, // 标题
         isTime: true, // 是否显示
+        FirstLevel: false, // 是否现实一级菜单
       };
     },
     created() {
@@ -50,12 +52,18 @@
       bus.$on('TAB_CHANGED', () => {
         this.initStorage();
       });
+      // 是否显示一级菜单
       // 更改标题
       bus.$on('TITLE_HEAD', (val) => {
         if (val) {
           this.title = val;
         } else {
           this.title = storageService.getLv3Nav();
+        }
+        if (val.sub_menu_name === '') {
+          this.FirstLevel = false;
+        } else {
+          this.FirstLevel = true;
         }
       });
       // item 标题
