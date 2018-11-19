@@ -427,7 +427,8 @@
       goBack() {
         // console.log(this.currAction);
         // this.JumpPage(this.currAction, 'List');
-        this.$router.back(-1);
+        // this.$router.back(-1);
+        this.JumpPage('NoCRFList');
       },
       jump() {
         this.JumpOuterPage('F2_Audit');
