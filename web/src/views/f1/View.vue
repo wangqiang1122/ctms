@@ -136,7 +136,6 @@
         this.JumpOuterPage('NoCRFEdit', this.routeParams);
       },
       goBack() {
-        console.log(this.currAction);
         this.JumpPage('NoCRFList');
         // this.$router.back(-1);
       },

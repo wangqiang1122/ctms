@@ -104,7 +104,15 @@
       },
       blockSub(idx, data) {
         if (data[idx].childMenuList.length === 0) {
-          console.log(data[idx]);
+          const item = {
+            formCode: data[idx].formCode,
+            formId: data[idx].formId,
+            formName: data[idx].formName,
+            menuModel: data[idx].menuModel,
+            menuId: data[idx].menuId,
+            menuName: data[idx].menuName,
+          };
+          this.goToNextLevel(item);
           return;
         }
         if (this.blockId === idx) {

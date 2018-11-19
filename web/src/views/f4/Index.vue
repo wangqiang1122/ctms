@@ -52,6 +52,7 @@
                 <span @click="jumpCRFView(value)"><img v-if="value.state === 1" src="../../assets/img/wenjian2.png" height="20" width="20"/></span>
                 <span @click="jumpCRFView(value)"><img v-if="value.state === 2" src="../../assets/img/wenjian3.png" height="20" width="20"/></span>
                 <span @click="jumpCRFView(value)"><img v-if="value.state === 3" src="../../assets/img/wenjian4.png" height="20" width="20"/></span>
+                <span @click="jumpCRFView(value)"><img v-if="value.state === 4" src="../../assets/img/wenjian5.png" height="20" width="20"/></span>
               </div>
             </template>
           </el-table-column>

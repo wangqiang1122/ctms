@@ -7,7 +7,7 @@
       <el-header height="60px">
         <c-header></c-header>
       </el-header>
-      <el-main :class="isclass?warp:''">
+      <el-main :class="isclass?'warp':''">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -17,13 +17,13 @@
 
 <style>
   .warp {
-    background-color: red;
+    background-color: cornsilk;
   }
 </style>
 <script>
 import CHeader from '@/components/CHeader';
 import CSidebar from '@/components/CSidebar';
-import bus from '@/utils/bus';
+import bus from './utils/bus';
 
 export default {
   name: 'index',
@@ -33,7 +33,7 @@ export default {
     };
   },
   created() {
-    bus.on('isclass', (val) => {
+    bus.$on('indexClass', (val) => {
       this.isclass = val;
     });
   },

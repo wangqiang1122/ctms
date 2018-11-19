@@ -6,10 +6,16 @@
     <!--</div>-->
     <!------ 输入框 ----->
     <el-table :data="tableStructure" border stripe style="width: 100%" v-loading="loading1" element-loading-text="拼命加载中">
-      <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip ></el-table-column>
+      <el-table-column prop="fieldName" label="名称" align="center" min-width="80px" show-overflow-tooltip >
+        <template slot-scope="scope">
+          <div :class="scope.row.isBold==0?'':'bold'">
+            {{scope.row.fieldName}}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="fieldType" label="输入结果" min-width="200px">
         <template slot-scope="scope">
-          {{scope.row}}
+          <!--{{scope.row}}-->
           <!-- 0静态文本 -->
           <div v-if="scope.row.fieldType.typeId == 0" size="small">{{scope.row.value.value}}{{scope.row.fieldType.tail}}</div>
           <!-- 2文本输入 -->
@@ -99,6 +105,7 @@
       this.currAction = storageService.getLv3Nav();
       this.getStructure(this.currAction.formId);
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '编辑:' });
+      bus.$emit('indexClass', true);
     },
     methods: {
       getStructure(formId) {
@@ -169,6 +176,10 @@
           this.tableStructure[index].value = [null, arr[2]];
         }
       },
+    },
+    beforeRouteLeave(to, from, next) {
+      bus.$emit('indexClass', false);
+      next();
     },
   };
 </script>

@@ -27,9 +27,9 @@
     <el-table :data="tableStructure" border stripe style="width: 100%" :span-method="objectSpanMethod" :show-header="false" :row-class-name="tableRowClassName" v-loading="loading1" element-loading-text="拼命加载中">
       <el-table-column label="No." align="left" width="60px">
         <template slot-scope="scope">
-          <span v-if="scope.row.rowSpan === 1">{{scope.row.fieldCode}}</span>
-          <span v-if="scope.row.rowSpan === 0">{{scope.row.fieldName}}</span>
-          <span v-if="scope.row.rowSpan === 0" class="italic">{{scope.row.remark}}</span>
+          <span v-if="scope.row.rowSpan === 1" :class="scope.row.isBold==0?'':'bold'">{{scope.row.fieldCode}}</span>
+          <span v-if="scope.row.rowSpan === 0" :class="scope.row.isBold==0?'':'bold'">{{scope.row.fieldName}}</span>
+          <span v-if="scope.row.rowSpan === 0" class="italic" :class="scope.row.isBold==0?'':'bold'">{{scope.row.remark}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="fieldName" label="问题" align="right">
@@ -145,6 +145,7 @@
       }
       this.getStructure(this.routeParams.formId);
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.routeParams.formId + this.routeParams.formName, tag: '编辑:' });
+      bus.$emit('indexClass', true);
     },
     methods: {
       getStructure(formId) {
@@ -282,6 +283,10 @@
         deep: true,
       },
     },
+    beforeRouteLeave(to, from, next) {
+      bus.$emit('indexClass', false);
+      next();
+    },
   };
 </script>
 
@@ -291,9 +296,9 @@
     text-align: center;
     margin: 15px 0;
   }
-  .f2-view {
-    background-color: burlywood;
-  }
+  /*.f2-view {*/
+    /*background-color: burlywood;*/
+  /*}*/
   .head span {
     font-weight: 500;
     font-size: 18px;

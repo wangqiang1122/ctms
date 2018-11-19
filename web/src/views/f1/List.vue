@@ -133,7 +133,6 @@
       },
       cellClick(row, column) {
         if (column.property === 'id') {
-          console.log(row);
           this.JumpPage('NoCRFView', { id: row[column.property] });
         } else {
           this.searchFieldCode = column.property;
