@@ -24,7 +24,7 @@
         <el-button size="mini" @click="reset">重置</el-button>
       </span>
       <el-button  @click="goBack" class="btn el-button" size="mini">返 回</el-button>
-      <el-button class="btn el-button" size="mini" type="primary" @click="add">新增</el-button>
+      <el-button class="btn el-button" size="mini" type="primary" @click="add" v-if="btnRights.isAdd === 1">新增</el-button>
     </div>
     <!----- pagination ------>
     <div class="footer">
@@ -56,6 +56,8 @@
     name: 'f1',
     data() {
       return {
+        // --- btnRights ---
+        btnRights: [],
         loading1: false,
         currAction: {},
         // --- table info ----
@@ -80,8 +82,10 @@
     },
     created() {
       this.currAction = storageService.getLv3Nav();
+      storageService.settablelist(this.currAction);
       this.search();
       this.getStructure(this.currAction.formId);
+      this.getRight(this.currAction.formId);
       bus.$emit('TITLE_HEAD', { sub_menu_name: this.currAction.menuName, tag: '列表:' });
     },
     methods: {
@@ -108,6 +112,11 @@
           //   this.resetXcache();
           // }
           this.resetPage(resp.page);
+        });
+      },
+      getRight(formId) {
+        f1Service.getPermissonsCRF(formId).then((resp) => {
+          this.btnRights = resp;
         });
       },
       getStructure(formId) {

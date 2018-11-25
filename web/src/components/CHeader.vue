@@ -21,7 +21,7 @@
       <!--<img src="../assets/img/head-position.png" height="22" width="22"/>-->
       <!--<span class="el-link" @click="skip1">CTMS</span> / -->
     <span @click="skip2">{{projectName}}</span>
-    <span @click="skip2" v-if="FirstLevel">> {{title.sub_menu_name}}</span>
+    <span v-if="FirstLevel" @click="skip3">> {{title.sub_menu_name}}</span>
     </p>
   </div>
 </template>
@@ -88,6 +88,11 @@
         // 二级跳转必须回到首页才可以进行更新
         this.$router.push({ path: '/main' });
         bus.$emit('TAB_CHANGED');
+      },
+      // 添加跳转时间
+      skip3() {
+        storageService.setLv3Nav(storageService.gettablelist());
+        this.$router.push({ name: storageService.gettablelist().menuModel });
       },
       initStorage() {
         const topNav = storageService.getTopNav();
