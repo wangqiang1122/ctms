@@ -32,7 +32,7 @@
                      background :page-size="pageSize" :page-sizes="pageSizes" :layout="layout" :total="totalNum"></el-pagination>
     </div>
     <!------ content ------>
-    <div class="content">
+    <div class="content list1">
       <el-table :data="tableData" @cell-click="cellClick" @header-click="headerClick" border stripe v-loading="loading1"
                 element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" style="width: 100%">
         <el-table-column v-for="item in tableHead" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="130px" sortable>
@@ -111,7 +111,7 @@
         });
       },
       getStructure(formId) {
-        f1Service.getF1Structure(formId).then((resp) => {
+        f1Service.getF2StructureList(formId).then((resp) => {
           this.tableStructure = resp.fieldList;
         });
       },

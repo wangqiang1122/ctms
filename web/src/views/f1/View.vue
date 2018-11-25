@@ -5,7 +5,7 @@
       <!--查看{{currAction.form_des}} #{{dataId}}-->
     </div>
     <div class="btn">
-      <el-button class="btn el-button" size="mini" type="primary" @click="goBack">返回</el-button>
+      <el-button class="btn el-button" size="mini" type="primary" @click="goBack">列表</el-button>
       <el-button class="btn el-button btnright" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑</el-button>
     </div>
     <!------ 输入框 ----->

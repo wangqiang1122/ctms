@@ -82,7 +82,7 @@
               v-for="item in scope.row.fieldType.content"
               :key="item.codeId"
               :label="item.codeValue1+item.codeValue2+item.remark"
-              :value="item.codeValue1">
+              :value="item.codeId">
             </el-option>
           </el-select>
           <!-- 8多选 -->
@@ -214,8 +214,8 @@
         });
       },
       goBack() {
-        // this.JumpOuterPage('F2_View');
-        this.$router.back(-1);
+        this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: this.routeParams.recordId });
+        // this.$router.back(-1);
       },
       objectSpanMethod({ row, columnIndex }) {
         const d = row.rowSpan;

@@ -103,7 +103,7 @@
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button class="btn" size="mini" type="primary" @click="goBack">返回</el-button>
+      <el-button class="btn" size="mini" type="primary" @click="goBack">取消保存</el-button>
       <el-button class="btn" size="mini" type="primary" @click="save">保存</el-button>
     </div>
   </div>
@@ -194,6 +194,9 @@
           if (v.fieldType.typeId === 0 || v.fieldType.typeId === 11) {
             params[v.fieldCode] = v.fieldType.content;
           } else if (v.fieldType.typeId === 6) {
+            if (!v.value.value) {
+              v.value.value = '';
+            }
             if (v.value.value.length === 1) {
               params[v.fieldCode] = '';
             } else {
@@ -206,16 +209,18 @@
             params[v.fieldCode] = v.value.value;
           }
         });
+        alert('需要返回给我recordId 结构看rap');
         f2Service.putF2(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '保存成功！', type: 'success' });
+            this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: resp.recordId });
             this.goBack();
           }
         });
       },
       goBack() {
-        // this.JumpOuterPage('F2_View');
-        this.$router.back(-1);
+        this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: this.routeParams.recordId });
+        // this.$router.back(-1);
       },
       objectSpanMethod({ row, columnIndex }) {
         const d = row.rowSpan;
@@ -266,7 +271,16 @@
             if (v.fieldType.skip.length >= 0) {
               v.fieldType.skip.forEach((v1) => {
                 if (!v.value.value) return;
-                if (v.value.value.length === 1) return;
+                if (v.value.value.length === 1) {
+                  this.tableStructure.forEach((v2) => {
+                    const arr = v1.skipFieldCode.split(',');
+                    if (arr.indexOf(v2.fieldCode) >= 0) {
+                      v2.isShow = false;
+                      v2.value.value = '';
+                    }
+                  });
+                  return;
+                }
                 if (v.value && v1.conditionValue === v.value.value[1].toString()) {
                   this.tableStructure.forEach((v2) => {
                     const arr = v1.skipFieldCode.split(',');

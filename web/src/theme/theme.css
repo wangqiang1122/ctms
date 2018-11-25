@@ -130,12 +130,21 @@
   width: auto;
   overflow-y: auto;
 }
-.el-table--enable-row-hover .el-table__body tr:hover>td{ /* hover高亮*/
+
+.el-table--enable-row-hover .el-table__body tr:hover>td:not(:first-child) { /* hover高亮*/
   background-color: #ffff00;
 }
-.content .cell {
-  cursor: pointer;
+.el-table--enable-row-hover .el-table__body tr>td{
+  cursor: all-scroll;
 }
+.list1 .el-table--enable-row-hover .el-table__body tr>td:first-child{
+  cursor: pointer;
+  color: #1ca6fc;
+}
+
+/*.content .cell {*/
+  /*cursor: pointer;*/
+/*}*/
 
 /* ---------------------------------------------------- 新增全局class --------------------------------------------- */
 .footer {

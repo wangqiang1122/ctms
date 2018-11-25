@@ -45,7 +45,7 @@
               v-for="item in scope.row.fieldType.content"
               :key="item.codeId"
               :label="item.codeValue1+item.codeValue2+item.remark"
-              :value="item.codeValue1+item.codeValue2+item.remark">
+              :value="item.codeId">
             </el-option>
           </el-select>
           <!-- 8多选 -->
@@ -76,7 +76,7 @@
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button size="small" @click="goBack">返 回</el-button>
+      <el-button size="small" @click="goBack">取消保存</el-button>
       <el-button size="small" type="primary" @click="save">保 存</el-button>
     </div>
   </div>
@@ -143,6 +143,9 @@
           if (v.fieldType.typeId === 0 || v.fieldType.typeId === 11) {
             params[v.fieldCode] = v.fieldType.content;
           } else if (v.fieldType.typeId === 6) {
+            if (!v.value.value) {
+              v.value.value = '';
+            }
             if (v.value.length === 1) {
               params[v.fieldCode] = '';
             } else {
@@ -155,15 +158,17 @@
             params[v.fieldCode] = v.value.value;
           }
         });
+        alert('需要返回给我recordId 结构看rap');
         f1Service.putF1(this.currAction.formId, this.dataId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '更新成功！', type: 'success' });
-            this.JumpPage('NoCRFView', { id: this.dataId });
+            this.JumpPage('NoCRFView', { id: resp.recordId });
           }
         });
       },
       goBack() {
-        this.$router.go(-1);
+        // this.$router.go(-1);
+        this.JumpPage('NoCRFView', { id: this.dataId });
       },
       changeRadio(row, index) {
         /**

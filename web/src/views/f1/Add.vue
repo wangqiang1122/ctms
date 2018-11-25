@@ -70,7 +70,7 @@
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button size="small" @click="goBack">返 回</el-button>
+      <el-button size="small" @click="goBack">取消保存</el-button>
       <el-button size="small" type="primary" @click="save">保 存</el-button>
     </div>
   </div>
@@ -134,12 +134,13 @@
         f1Service.postF1(this.currAction.formId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '新增成功！', type: 'success' });
-            this.JumpPage('NoCRFList');
+            this.JumpPage('NoCRFView', { id: this.dataId });
           }
         });
       },
       goBack() {
-        this.$router.go(-1);
+        // this.$router.go(-1);
+        this.JumpPage('NoCRFList');
       },
       changeRadio(row, index) {
         /**

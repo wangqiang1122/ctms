@@ -34,7 +34,7 @@
                      background :page-size="pageSize" :page-sizes="pageSizes" :layout="layout" :total="totalNum"></el-pagination>
     </div>
     <!------ content ------>
-    <div class="content">
+    <div class="content list1">
       <el-table :data="tableData" @cell-click="cellClick" border stripe v-loading="loading1" @header-click="headerClick"
                 element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" style="width: 100%">
         <el-table-column v-if="showIns" v-for="item in tableHead1" :key="item.fieldCode" :prop="item.fieldCode" :label="item.fieldName" min-width="50px">
