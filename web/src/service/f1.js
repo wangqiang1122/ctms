@@ -43,11 +43,24 @@ export default {
       return resp.result;
     });
   },
-  // 数据结构
+  // 获取表数据接结构
   getF1Structure(formId) {
     const db = storageService.getTopNav().projectDB;
     // /${db}/${formId}
-    return api.get(`form-struct/${db}/${formId}`).then((resp) => {
+    return api.get(`struct-form-table/${db}/${formId}`).then((resp) => {
+      if (resp.code !== 200) {
+        MessageBox(resp.message, '提示', {
+          confirmButtonText: '确定',
+        });
+        return null;
+      }
+      return resp.result;
+    });
+  },
+  // 获取表数据结构 list用
+  getF2StructureList(formId) {
+    const db = storageService.getTopNav().projectDB;
+    return api.get(`struct-form-view/${db}/${formId}`).then((resp) => {
       if (resp.code !== 200) {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
