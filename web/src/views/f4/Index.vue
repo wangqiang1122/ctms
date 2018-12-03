@@ -9,9 +9,9 @@
         <el-select size="small" v-model="siteCode" placeholder="请选择">
           <el-option
             v-for="(item) in siteList"
-            :key="item.siteCode"
+            :key="item.siteId"
             :label="item.siteName"
-            :value="item.siteCode">
+            :value="item.siteId">
           </el-option>
         </el-select>
       </span>
@@ -21,7 +21,7 @@
           <el-option
             v-for="(item, i) in subjectList"
             :key="item.subjectId"
-            :label="item.subjectId"
+            :label="item.subjectCode"
             :value="item.subjectId">
           </el-option>
         </el-select>

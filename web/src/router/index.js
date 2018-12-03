@@ -70,7 +70,7 @@ const router = new Router({
     /* *********************** f1 ***************************** */
     {
       path: '/main/NoCRFList',
-      name: 'NoCRFList', // F1_List
+      name: 'NoCRFList', // F1_List "NoCRFList"
       component: F1List,
     },
     {
