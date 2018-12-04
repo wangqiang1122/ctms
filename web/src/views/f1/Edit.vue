@@ -158,7 +158,6 @@
             params[v.fieldCode] = v.value.value;
           }
         });
-        alert('需要返回给我recordId 结构看rap');
         f1Service.putF1(this.currAction.formId, this.dataId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '更新成功！', type: 'success' });

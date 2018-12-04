@@ -126,7 +126,6 @@
          * 进入功能层
          * */
         storageService.setLv3Nav(item);
-        console.log(item);
         this.$router.push({ name: item.URLModel });
       },
     },

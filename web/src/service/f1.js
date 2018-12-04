@@ -93,7 +93,7 @@ export default {
         });
         return null;
       }
-      return true;
+      return resp.result;
     });
   },
   // 非Crf表去权限
