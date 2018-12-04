@@ -80,7 +80,7 @@ export default {
         });
         return null;
       }
-      return true;
+      return resp.result;
     });
   },
   // 编辑新增受试者

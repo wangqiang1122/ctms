@@ -134,7 +134,7 @@
         f1Service.postF1(this.currAction.formId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '新增成功！', type: 'success' });
-            this.JumpPage('NoCRFView', { id: this.dataId });
+            this.JumpPage('NoCRFView', { id: resp.recordId });
           }
         });
       },
