@@ -7,15 +7,19 @@
       <el-button class="btn" size="mini" type="primary" @click="goBack">列表</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑CRF</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isRead" type="primary" @click="jump">查看历史</el-button>
+
       <el-button class="btn" size="mini" v-if="btnRights.isManage=== 1" type="primary" @click="queryOpen(0)">DM质疑</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerify=== 1" type="primary" @click="queryOpen(1)">审核质疑</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.analyze=== 1" type="primary">分析</el-button>
+       <!---isVerifyAccept----->
       <el-button class="btn" size="mini" v-if="btnRights.isSubmit === 1" type="primary" @click="changeStatus(0)">提交</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="changeStatus(1)">审核接受</el-button>
-      <el-button class="btn" size="mini" v-if="btnRights.isVerify === 1" type="primary" @click="changeStatus(2)">审核通过</el-button>
+
+      <el-button class="btn" size="mini" v-if="btnRights.isManageAccept=== 1" type="primary" @click="changeStatus(1)">DM接受</el-button>
+      <el-button class="btn" size="mini" v-if="btnRights.isVerifyAccept === 1" type="primary" @click="changeStatus(2)">审核接受</el-button>
+
       <el-button class="btn" size="mini" v-if="btnRights.isUnlock=== 1" type="primary"  @click="changeStatus(4)">解锁</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isLock=== 1" type="primary"  @click="changeStatus(3)">锁定</el-button>
-      <!--<el-button class="btn" size="mini" v-if="btnRights.delete=== 1" type="primary">删除</el-button>-->
+      <el-button class="btn" size="mini" v-if="btnRights.isDelete=== 1" type="primary">删除</el-button>
     </div>
     <div class="el-table-wrap">
       <el-row>
@@ -354,6 +358,7 @@
               type: 'success',
               message: '您通过了规则',
             });
+            this.getRight(this.routeParams.formId, this.routeParams.recordId);
           }
         });
       },
