@@ -15,8 +15,10 @@
             <!-- 2文本输入 -->
             <el-input style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value" :disabled="false"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
             <!-- 1数字类型 -->
-            <el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value"></el-input-number>
-            <!-- 4日期 -->
+            <!--<el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value"></el-input-number>-->
+            <el-input style="width: 250px;" v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value" :disabled="false" type="number"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
+
+          <!-- 4日期 -->
             <el-date-picker
               v-if="scope.row.fieldType.typeId == 4"
               size="small"
@@ -30,9 +32,12 @@
           <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
             <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
           </el-checkbox-group>
-          <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
-            <el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>
-          </el-radio-group>
+          <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
+            <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
+          </el-checkbox-group>
+          <!--<el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">-->
+            <!--<el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>-->
+          <!--</el-radio-group>-->
             <!-- 7下拉 -->
             <el-select v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value" placeholder="请选择">
               <el-option
@@ -106,9 +111,9 @@
           this.tableStructure.forEach((v) => {
             if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {
               v.value = { value: '' };
-              if (v.fieldType.content.length <= 3) {
-                v.value.value = [null];
-              }
+              // if (v.fieldType.content.length <= 3) {
+              v.value.value = [null];
+              // }
             }
           });
         });

@@ -47,7 +47,9 @@
             <!-- 2文本输入 -->
             <el-input style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value" :disabled="false"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
             <!-- 1数字类型 -->
-            <el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value.value"  @change="numberChange(scope.row.value)"></el-input-number>
+              <el-input  v-if="scope.row.fieldType.typeId == 1" v-model="scope.row.value.value"  type="number" size="small"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
+              <!--<el-input-number size="small" v-model="scope.row.value.value" ></el-input-number>  <span>{{scope.row.fieldType.tail}}</span>-->
+            <!--<el-input-number v-if="scope.row.fieldType.typeId == 1" size="small" v-model="scope.row.value.value"  @change="numberChange(scope.row.value)"></el-input-number>-->
             <!-- 4日期 -->
             <el-date-picker
               v-if="scope.row.fieldType.typeId == 4"
@@ -62,9 +64,13 @@
             <el-checkbox-group class="new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length < 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
               <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
             </el-checkbox-group>
-            <el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">
-              <el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>
-            </el-radio-group>
+            <el-checkbox-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 && scope.row.fieldType.content.length >= 3" @change="changeRadio(scope.row, scope.$index)" v-model="scope.row.value.value">
+              <el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>
+            </el-checkbox-group>
+            <!--<el-radio-group class="endways new-radio" v-if="scope.row.fieldType.typeId == 6 " @change="changeRadio(scope.row, scope.$index)"  v-model="scope.row.value.value">-->
+              <!--&lt;!&ndash;<el-radio :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-radio>&ndash;&gt;-->
+              <!--<el-checkbox :label="item.codeId" :key="item.codeId" v-for="item in scope.row.fieldType.content">{{item.codeValue1}}{{item.codeValue2}}{{item.remark}}</el-checkbox>-->
+            <!--</el-radio-group>-->
             <!-- 7下拉 -->
             <el-select v-if="scope.row.fieldType.typeId == 7" size="small" v-model="scope.row.value.value" placeholder="请选择">
               <el-option
@@ -178,9 +184,10 @@
                   }
                   v.value = this.tBody[v1];
                   if (v.fieldType.typeId === 6 && v.fieldType.typeId !== null) {
-                    if (v.fieldType.content.length <= 3) {
-                      v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
-                    }
+                    // if (v.fieldType.content.length <= 3) {
+                    //   v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
+                    // }
+                    v.value.value = v.value.value || v.value.value === 0 ? [null, v.value.value] : [null];
                   }
                 }
               });
@@ -273,22 +280,23 @@
                 if (v.value.value.length === 1) {
                   this.tableStructure.forEach((v2) => {
                     const arr = v1.skipFieldCode.split(',');
+                    // console.log(v2);
+                    // console.log(arr);
                     if (arr.indexOf(v2.fieldCode) >= 0) {
                       v2.isShow = false;
-                      v2.value.value = '';
-                    }
-                  });
-                  return;
-                }
-                if (v.value && v1.conditionValue === v.value.value[1].toString()) {
-                  this.tableStructure.forEach((v2) => {
-                    const arr = v1.skipFieldCode.split(',');
-                    if (arr.indexOf(v2.fieldCode) >= 0) {
-                      v2.isShow = false;
-                      v2.value.value = '';
+                      // v2.value.value = '';
                     }
                   });
                 }
+                // if (v.value && v1.conditionValue === v.value.value[1].toString()) {
+                //   this.tableStructure.forEach((v2) => {
+                //     const arr = v1.skipFieldCode.split(',');
+                //     if (arr.indexOf(v2.fieldCode) >= 0) {
+                //       v2.isShow = false;
+                //       // v2.value.value = '';
+                //     }
+                //   });
+                // }
               });
             }
           });

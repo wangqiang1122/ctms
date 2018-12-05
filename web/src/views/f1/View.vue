@@ -19,7 +19,9 @@
           <!-- 2文本输入 -->
           <el-input disabled style="width: 250px;" v-if="scope.row.fieldType.typeId == 2" size="small" v-model="scope.row.value.value"><el-button slot="append" v-if="scope.row.fieldType.tail">{{scope.row.fieldType.tail}}</el-button></el-input>
           <!-- 1数字类型 -->
-          <el-input-number disabled v-if="scope.row.fieldType.typeId == 1" size="small" :value="scope.row.value.value"></el-input-number>
+          <div  v-if="scope.row.fieldType.typeId == 1">
+            <el-input-number disabled size="small" :value="scope.row.value.value"></el-input-number> <span>{{scope.row.fieldType.tail}}</span>
+          </div>
           <!-- 4日期 -->
           <el-date-picker
             disabled
