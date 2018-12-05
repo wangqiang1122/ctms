@@ -428,7 +428,8 @@
         // console.log(this.currAction);
         // this.JumpPage(this.currAction, 'List');
         // this.$router.back(-1);
-        this.JumpPage('NoCRFList');
+        storageService.setLv3Nav({ URLModel: 'CRFList', formCode: this.tHead.formCode, formId: this.tHead.formId, formName: this.tHead.formName, menuName: this.tHead.formName });
+        this.JumpPage('CRFList');
       },
       jump() {
         this.JumpOuterPage('F2_Audit');

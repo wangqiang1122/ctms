@@ -209,17 +209,16 @@
             params[v.fieldCode] = v.value.value;
           }
         });
-        alert('需要返回给我recordId 结构看rap');
         f2Service.putF2(this.routeParams.formId, this.routeParams.recordId, params).then((resp) => {
           if (resp) {
             this.$message({ message: '保存成功！', type: 'success' });
-            this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: resp.recordId });
+            this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: resp.recordId, formName: this.routeParams.formName, state: this.routeParams.state });
             this.goBack();
           }
         });
       },
       goBack() {
-        this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: this.routeParams.recordId });
+        this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: this.routeParams.recordId, formName: this.routeParams.formName, state: this.routeParams.state });
         // this.$router.back(-1);
       },
       objectSpanMethod({ row, columnIndex }) {
