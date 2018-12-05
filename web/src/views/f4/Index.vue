@@ -146,7 +146,7 @@
           if (resp) {
             this.siteList = resp.site;
             this.subjects = resp.subject;
-            this.siteCode = this.siteList[0].siteCode;
+            this.siteCode = this.siteList[0].siteId;
           }
         });
       },

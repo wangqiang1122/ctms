@@ -214,7 +214,7 @@
         });
       },
       goBack() {
-        this.JumpOuterPage('F2_View', { formId: this.routeParams.formId, recordId: this.routeParams.recordId });
+        this.JumpOuterPage('F2_View', this.routeParams);
         // this.$router.back(-1);
       },
       objectSpanMethod({ row, columnIndex }) {
