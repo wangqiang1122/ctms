@@ -26,7 +26,7 @@
         <el-col :span="6" class="title">CRF ID: {{tHead.CRFId}}</el-col>
         <el-col :span="10" class="title">{{tHead.formCode}} {{tHead.formName}}</el-col>
         <el-col :span="4" class="title">通过规则: {{tHead.ruleState}}</el-col>
-        <el-col :span="4" class="title">通过质疑: {{tHead.queryStatus}}</el-col>
+        <el-col :span="4" class="title">通过质疑: {{tHead.queryState}}</el-col>
       </el-row>
       <el-row>
         <el-col :span="6" class="title">机构: {{tHead.siteName}}</el-col>
@@ -490,6 +490,7 @@
             });
             this.listQuery();
             this.getStructure(this.routeParams.formId);
+            this.getRight(this.routeParams.formId, this.routeParams.recordId);
           }
         });
       },
@@ -561,6 +562,7 @@
             this.dialogVisible3 = false;
             this.listQuery();
             this.getStructure(this.routeParams.formId);
+            this.getRight(this.routeParams.formId, this.routeParams.recordId);
             this.$message({
               type: 'success',
               message: '已关闭',
@@ -582,6 +584,7 @@
             this.dialogVisible4 = false;
             this.listQuery();
             this.getStructure(this.routeParams.formId);
+            this.getRight(this.routeParams.formId, this.routeParams.recordId);
             this.$message({
               type: 'success',
               message: '已删除',
@@ -604,6 +607,7 @@
             this.dialogVisible5 = false;
             this.listQuery();
             this.getStructure(this.routeParams.formId);
+            this.getRight(this.routeParams.formId, this.routeParams.recordId);
             this.$message({
               type: 'success',
               message: '保存成功',
