@@ -4,6 +4,7 @@
       <!--查看: <span>{{routeParams.formId}} {{routeParams.formName}}</span>-->
     <!--</div>-->
     <div class="btn">
+      <el-button class="btn" size="mini" type="primary" @click="gobackVisitProcess">报告总汇</el-button>
       <el-button class="btn" size="mini" type="primary" @click="goBack">列表</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isEdit === 1" type="primary" @click="edit">编辑CRF</el-button>
       <el-button class="btn" size="mini" v-if="btnRights.isRead" type="primary" @click="jump">查看历史</el-button>
@@ -437,6 +438,9 @@
         // this.$router.back(-1);
         storageService.setLv3Nav({ URLModel: 'CRFList', formCode: this.tHead.formCode, formId: this.tHead.formId, formName: this.tHead.formName, menuName: this.tHead.formName });
         this.JumpPage('CRFList');
+      },
+      gobackVisitProcess() {
+        this.$router.push({ name: 'VisitProcess' });
       },
       jump() {
         this.JumpOuterPage('F2_Audit');

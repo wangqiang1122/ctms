@@ -178,10 +178,10 @@
          * 将checkbox改造为可以反向选中的radio组件
          * */
         // checkbox以数组形式保存，第一个值为null，从第2个值开始存值
-        const arr = row.value;
+        const arr = row.value.value;
         if (arr.length === 3) {
           // 第二三个值不同，取后者
-          this.tableStructure[index].value = [null, arr[2]];
+          this.tableStructure[index].value.value = [null, arr[2]];
         }
       },
     },

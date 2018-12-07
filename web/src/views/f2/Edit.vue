@@ -288,15 +288,16 @@
                     }
                   });
                 }
-                // if (v.value && v1.conditionValue === v.value.value[1].toString()) {
-                //   this.tableStructure.forEach((v2) => {
-                //     const arr = v1.skipFieldCode.split(',');
-                //     if (arr.indexOf(v2.fieldCode) >= 0) {
-                //       v2.isShow = false;
-                //       // v2.value.value = '';
-                //     }
-                //   });
-                // }
+                if (typeof v.value.value[1] === 'undefined') { return; }
+                if (v.value && v1.conditionValue === v.value.value[1].toString()) {
+                  this.tableStructure.forEach((v2) => {
+                    const arr = v1.skipFieldCode.split(',');
+                    if (arr.indexOf(v2.fieldCode) >= 0) {
+                      v2.isShow = false;
+                      // v2.value.value = '';
+                    }
+                  });
+                }
               });
             }
           });
