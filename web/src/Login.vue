@@ -31,7 +31,7 @@
                     <el-form-item prop="userCode" required>
                       <label for="account" class="field prepend-icon">
                         <input type="text" name="account" id="account" v-model.trim="loginData.userCode" class="gui-input"
-                               placeholder="输入邮箱或手机号">
+                               placeholder="输入邮箱或手机号" >
                         <label for="account" class="field-icon">
                           <i class="fa fa-user"></i>
                         </label>
@@ -85,10 +85,10 @@ export default {
       },
       rules: {
         userCode: [
-          { validator: this.validateUserName, trigger: 'blur' },
+          { required: true, validator: this.validateUserName, trigger: 'blur' },
         ],
         userPwd: [
-          { validator: this.validatePassword, trigger: 'blur' },
+          { required: true, validator: this.validatePassword, trigger: 'blur' },
         ],
       },
       rememberMe: true,

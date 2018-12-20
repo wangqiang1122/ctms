@@ -1,6 +1,7 @@
 import api from '@/service/http';
 import storage from '@/service/storage';
 import { MessageBox } from 'element-ui';
+import bus from '@/utils/bus';
 
 export default {
   // 登陆
@@ -8,7 +9,17 @@ export default {
     return api.post('login', params).then((resp) => {
       if (resp.code === 200 && resp.result) {
         storage.setAccount(resp.result);
-        window.location.href = `http://${window.location.host}/console/#/`;
+        this.getProjects().then((res) => {
+          if (res.projectList.length === 1) {
+            storage.setPrivilege(res);
+            storage.setTopNav(res.projectList[0]);
+            bus.$emit('TAB_CHANGED');
+            bus.$emit('TITLE_HEAD', { sub_menu_name: '', tag: '' });
+            window.location.href = `http://${window.location.host}/console/#/main`;
+          } else {
+            window.location.href = `http://${window.location.host}/console/#/`;
+          }
+        });
       } else {
         MessageBox(resp.message, '提示', {
           confirmButtonText: '确定',
