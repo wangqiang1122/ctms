@@ -4,6 +4,7 @@
       <img src="../assets/img/logo.png" alt="logo" height="36" width="126" @click="logoCli">
     </div>
     <p class="item i1">
+      <span class="ChangePassword" @click="linkChang">修改密码</span>
       <el-dropdown :hide-on-click="false" @command="handleCommand">
         <span class="el-dropdown-link">
           Hello ! <span class="u-name">{{username}}</span><i class="el-icon-arrow-down el-icon--right"></i>
@@ -94,6 +95,10 @@
         storageService.setLv3Nav(storageService.gettablelist());
         this.$router.push({ name: storageService.gettablelist().menuModel });
       },
+      // 修改密码
+      linkChang() {
+        this.$router.push({ path: '/main/ChangePassword/ChangePassword' });
+      },
       initStorage() {
         const topNav = storageService.getTopNav();
         if (topNav) {
@@ -137,7 +142,9 @@
     text-align: center;
     cursor: pointer;
   }
-
+  .ChangePassword{
+    padding-right: 30px;
+  }
   .item img {
     vertical-align: middle;
     margin: 0 10px;

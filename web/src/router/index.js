@@ -47,6 +47,12 @@ import F3Index from '@/views/f3/Index';
  *
  * */
 import F4List from '@/views/f4/Index';
+/* changePassword  - 修改密码 changePassword
+ *
+ *
+ *
+ * */
+import changePassword from '@/views/ChangePassword/ChangePassword';
 
 /*
  * 开发文档
@@ -120,6 +126,12 @@ const router = new Router({
       path: '/main/f4/index',
       name: 'VisitProcess',
       component: F4List,
+    },
+    /* *********************** changePassword 修改密码 ***************************** */
+    {
+      path: '/main/ChangePassword/ChangePassword',
+      name: 'changePassword',
+      component: changePassword,
     },
     /* *********************** 开发文档 ***************************** */
     {
